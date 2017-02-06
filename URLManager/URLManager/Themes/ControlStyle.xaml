@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:URLManager.Themes"
+                    xmlns:c="clr-namespace:URLManager.Controls"
+                    xmlns:se="clr-namespace:URLManager.Controls.SetterEditor">
+
+    <Style x:Key="SettingEditorStyle" TargetType="{x:Type c:SettingEditor}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <ListView Margin="5">
+                            
+                        </ListView>
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>
