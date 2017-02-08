@@ -10,5 +10,7 @@ namespace URLManager.Input.Keyboard.HotKey.Base
     {
         public bool Enabled { get; set; } = true;
         public string Name { get; internal set; }
+
+        public event HotKeyEvent Action;
     }
 }

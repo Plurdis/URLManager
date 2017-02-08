@@ -69,7 +69,7 @@ namespace URLManager.Input.Keyboard.HotKey
 
                             if (!Flag) continue;
 
-                            HotKeyPressed(hk, new HotKeyEventArgs() { HotKeyType = typeof(GeneralHotKey) });
+                            HotKeyPressed?.Invoke(hk, new HotKeyEventArgs() { HotKeyType = typeof(GeneralHotKey) });
                         }
                         break;
                     case "DoubleHotKey":
@@ -81,7 +81,7 @@ namespace URLManager.Input.Keyboard.HotKey
 
                             if (LastKey == dhk.FirstKey && input.Keyboard.IsKeyDown(dhk.SecondKey) && LastKey != input.Key.None && !dhk.Pressing)
                             {
-                                HotKeyPressed(hk, new HotKeyEventArgs() { HotKeyType = typeof(DoubleHotKey) });
+                                HotKeyPressed?.Invoke(hk, new HotKeyEventArgs() { HotKeyType = typeof(DoubleHotKey) });
                                 LastKey = input.Key.None;
                             }
                             else if (input.Keyboard.IsKeyUp(dhk.FirstKey))
