@@ -15,6 +15,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using URLManager.Core.Executor;
 using URLManager.Core.Extension;
+using URLManager.Input.Keyboard.HotKey;
+using URLManager.Input.Keyboard.HotKey.Base;
 
 namespace URLManager
 {
@@ -26,6 +28,19 @@ namespace URLManager
         public MainWindow()
         {
             InitializeComponent();
+
+            GeneralHotKey hk = new GeneralHotKey(Key.LeftCtrl, new Key[] { Key.K });
+            DoubleHotKey dk = new DoubleHotKey(Key.LeftShift, Key.LeftShift);
+
+            HotKeyManager.Add(dk);
+            HotKeyManager.Add(hk);
+            
+            HotKeyManager.HotKeyPressed += KeyPressed;
+        }
+
+        private void KeyPressed(BaseHotKey sender, HotKeyEventArgs e)
+        {
+            MessageBox.Show(e.HotKeyType.ToString());
         }
     }
 }

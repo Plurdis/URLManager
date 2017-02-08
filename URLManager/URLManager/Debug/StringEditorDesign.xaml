@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:URLManager.Debug"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="300" Height="30">
+             d:DesignHeight="30" d:DesignWidth="300" Height="30" Margin="5">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>

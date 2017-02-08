@@ -12,12 +12,16 @@ namespace URLManager.Core.Setter
     {
         public EnumSetter(List<Enum> listdata)
         {
+            
             ListData = listdata;
         }
         public EnumSetter(Enum[] listdata) : this(listdata.ToList())
         { }
         List<Enum> ListData;
 
+        // TODO : 아래의 두가지 해결 후 EditorValue에 적용
+        // Description To Enum
+        // Enum To Description 
         public override object EditorValue
         {
             get { return ListData; }
