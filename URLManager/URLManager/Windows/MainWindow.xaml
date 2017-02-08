@@ -7,9 +7,5 @@
         xmlns:Debug="clr-namespace:URLManager.Debug" x:Class="URLManager.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-
-        <Debug:SettingEditorDesign Margin="5"/>
-
-    </Grid>
+    <Grid/>
 </Window>

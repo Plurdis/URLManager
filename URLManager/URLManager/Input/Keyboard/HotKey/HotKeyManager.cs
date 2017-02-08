@@ -77,15 +77,20 @@ namespace URLManager.Input.Keyboard.HotKey
 
                         if (dhk.FirstKey != input.Key.None && dhk.SecondKey != input.Key.None)
                         {
-                            if (LastKey == dhk.FirstKey && input.Keyboard.IsKeyDown(dhk.SecondKey) && LastKey != input.Key.None)
+                            
+
+                            if (LastKey == dhk.FirstKey && input.Keyboard.IsKeyDown(dhk.SecondKey) && LastKey != input.Key.None && !dhk.Pressing)
                             {
-                                Console.WriteLine("이벤트 발생!");
                                 HotKeyPressed(hk, new HotKeyEventArgs() { HotKeyType = typeof(DoubleHotKey) });
                                 LastKey = input.Key.None;
                             }
-                            else if (input.Keyboard.IsKeyDown(dhk.FirstKey))
+                            else if (input.Keyboard.IsKeyUp(dhk.FirstKey))
                             {
-                                Console.WriteLine("인식됨");
+                                dhk.Pressing = false;
+                            }
+                            else if (input.Keyboard.IsKeyDown(dhk.FirstKey) && !dhk.Pressing)
+                            {
+                                dhk.Pressing = true;
                                 LastKey = dhk.FirstKey;
                                 TimeCount = 0;
                             }
@@ -95,7 +100,7 @@ namespace URLManager.Input.Keyboard.HotKey
             }
 
 
-            TimeCount += 10;
+            TimeCount += dt.Interval.Milliseconds;
 
             if (TimeCount >= 500)
             {

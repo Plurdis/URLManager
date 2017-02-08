@@ -22,6 +22,7 @@ namespace URLManager.Input.Keyboard.HotKey
         public Key FirstKey { get; set; }
         public Key SecondKey { get; set; }
 
+        public bool Pressing { get; set; } = false;
 
         public override string ToString()
         {
