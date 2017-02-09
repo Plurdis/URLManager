@@ -25,16 +25,7 @@ namespace URLManager.Core.Executor
             get { return FileData.Exists; }
         }
 
-        public override bool IsLocalFile
-        {
-            get { return true; }
-        }
-
-        public override iSetter[] SettingItems
-        {
-            get { return null; }
-        }
-
+        
         
         public override bool Execute()
         {
@@ -44,7 +35,7 @@ namespace URLManager.Core.Executor
             return true;
         }
 
-        public override bool OpenContainFolder()
+        public bool OpenContainFolder()
         {
             if (!FileData.Exists) return false;
             Process.Start("explorer.exe", string.Format("/select,\"{0}\"", FileData.FullName));

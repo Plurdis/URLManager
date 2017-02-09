@@ -9,32 +9,43 @@ using URLManager.Core.Setter.Base;
 
 namespace URLManager.Core.Setter
 {
-    class FileSetter : BaseSetter
+    class FileSetter : BaseSetter<FileInfo, string>
     {
         // EditorType에 맟춰서 현재 Setter는 string
 
         FileInfo fileData;
 
-        public override object EditorValue
+        public override FileInfo InnerProperty
         {
-            get { return fileData.DirectoryName; }
-            set { fileData = new FileInfo((string)value); }
+            get
+            {
+                return fileData;
+            }
+
+            set
+            {
+                fileData = value;
+            }
         }
 
         public override EditorType DataEditor
         {
             get { return EditorType.String; }
         }
+        
 
-        public override Type DataType
+        public override string DisplayValue
         {
-            get { return typeof(FileInfo); }
+            get
+            {
+                return fileData.FullName;
+            }
+            set
+            {
+                fileData = new FileInfo(fileData.FullName);
+            }
         }
-
-        public override object RealValue
-        {
-            get { return fileData; }
-            set { fileData = (FileInfo)value; }
-        }
+        
+        
     }
 }

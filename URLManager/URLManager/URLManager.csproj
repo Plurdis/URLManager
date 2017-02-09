@@ -102,7 +102,6 @@
     <Compile Include="Core\EditorType.cs" />
     <Compile Include="Core\Interfaces\iExecutor.cs" />
     <Compile Include="Core\Interfaces\iSetter.cs" />
-    <Compile Include="Core\Interfaces\iSetting.cs" />
     <Compile Include="Core\SetterModel\Base\BaseSetter.cs" />
     <Compile Include="Core\SetterModel\EnumSetter.cs" />
     <Compile Include="Core\SetterModel\StringSetter.cs" />
@@ -125,6 +124,8 @@
     <Compile Include="Input\Keyboard\HotKey\DoubleHotKey.cs" />
     <Compile Include="Input\Keyboard\HotKey\Base\iHotKey.cs" />
     <Compile Include="Input\Keyboard\HotKey\GeneralHotKey.cs" />
+    <Compile Include="Stoargy\Base\BaseStoargy.cs" />
+    <Compile Include="Stoargy\Data\StoargyData.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -157,9 +158,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FileSetting\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

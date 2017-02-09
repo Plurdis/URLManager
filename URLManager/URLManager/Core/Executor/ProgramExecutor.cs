@@ -25,30 +25,12 @@ namespace URLManager.Core.Executor
             get { return FileData.Exists; }
         }
 
-        public override bool IsLocalFile { get { return true; } }
-
-        public override iSetter[] SettingItems
-        {
-            get
-            {
-                return new iSetter[]{ };
-            }
-        }
-
+        
         public override bool Execute()
         {
             if (!CanExecute) return false;
 
             Process.Start(FileData.FullName);
-
-            return true;
-        }
-
-        public override bool OpenContainFolder()
-        {
-            if (!FileData.Exists) return false;
-
-            Process.Start("explorer.exe" , string.Format("/select,\"{0}\"", FileData.FullName));
 
             return true;
         }

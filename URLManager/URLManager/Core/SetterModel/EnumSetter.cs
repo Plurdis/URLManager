@@ -1,31 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using URLManager.Core.Interfaces;
 using URLManager.Core.Setter.Base;
 
 namespace URLManager.Core.Setter
 {
-    class EnumSetter : BaseSetter
+    class EnumSetter : BaseSetter<Enum[], Enum[]>
     {
-        public EnumSetter(List<Enum> listdata)
+        public EnumSetter(List<Enum> listdata) : this(listdata.ToArray())
+        { }
+        public EnumSetter(Enum[] listdata)
         {
-            
             ListData = listdata;
         }
-        public EnumSetter(Enum[] listdata) : this(listdata.ToList())
-        { }
-        List<Enum> ListData;
+
+        Enum[] ListData;
 
         // TODO : 아래의 두가지 해결 후 EditorValue에 적용
         // Description To Enum
-        // Enum To Description 
-        public override object EditorValue
+        // Enum To Description (해결)
+        public override Enum[] DisplayValue
         {
             get { return ListData; }
-            set { ListData = (List<Enum>)value; }
+            set { ListData = value; }
         }
 
         public override EditorType DataEditor
@@ -33,15 +31,31 @@ namespace URLManager.Core.Setter
             get { return EditorType.ListEnumString; }
         }
 
-        public override Type DataType
-        {
-            get { return typeof(List<Enum>); }
-        }
-
-        public override object RealValue
+        public override Enum[] InnerProperty
         {
             get { return ListData; }
-            set { ListData = (List<Enum>)value; }
+            set { ListData = value; }
+        }
+
+        public Enum SelectedEnum
+        {
+            get { return ListData[SelectedIndex]; }
+            
+        }
+
+
+        public int _SelectedIndex = 0;
+        public int SelectedIndex {
+            get
+            {
+                return _SelectedIndex;
+            }
+            set
+            {
+                if (value > ListData.Count() - 1) value = ListData.Count() - 1;
+                else if (value < 0) value = 0;
+                _SelectedIndex = value;
+            }
         }
     }
 }

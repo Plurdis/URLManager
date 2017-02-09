@@ -9,7 +9,7 @@ using URLManager.Global;
 
 namespace URLManager.Core.Setter
 {
-    class StringSetter : BaseSetter
+    class StringSetter : BaseSetter<string,string>
     {
         public StringSetter(string StringData)
         {
@@ -17,7 +17,7 @@ namespace URLManager.Core.Setter
         }
         public string StrData;
 
-        public override object EditorValue
+        public override string DisplayValue
         {
             get { return StrData; }
             set
@@ -31,16 +31,11 @@ namespace URLManager.Core.Setter
             get { return EditorType.String; }
         }
 
-        public override Type DataType
-        {
-            get { return typeof(string); }
-        }
-
-        public override object RealValue
+        public override string InnerProperty
         {
             get { return StrData; }
 
-            set { StrData = (string)value; }
+            set { StrData = value; }
         }
     }
 }

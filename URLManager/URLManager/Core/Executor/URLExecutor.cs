@@ -30,29 +30,18 @@ namespace URLManager.Core.Executor
                 return result;
             }
         }
-
-        public override bool IsLocalFile
-        {
-            get { return false; }
-        }
+        
 
         EnumSetter BrowserSetter = new EnumSetter(
             new Enum[] { BrowserKind.InternetExplorer,
                          BrowserKind.Chrome,
                          BrowserKind.Firefox });
-
-        public override iSetter[] SettingItems
-        {
-            get { return new iSetter[] { BrowserSetter }; }
-        }
-
-
-
+        
         public override bool Execute()
         {
             if (!CanExecute) return false;
 
-            switch (((BrowserKind)BrowserSetter.RealValue))
+            switch (((BrowserKind)BrowserSetter.SelectedEnum))
             {
                 case BrowserKind.InternetExplorer:
                     Process.Start("iexplore", $"{URLLink}");
@@ -66,11 +55,6 @@ namespace URLManager.Core.Executor
             }
 
             return true;
-        }
-
-        public override bool OpenContainFolder()
-        {
-            return false;
         }
     }
 }

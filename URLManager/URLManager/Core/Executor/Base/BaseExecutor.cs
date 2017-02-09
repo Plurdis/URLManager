@@ -7,16 +7,12 @@ using URLManager.Core.Interfaces;
 
 namespace URLManager.Core.Executor.Base
 {
-    abstract class BaseExecutor : iExecutor, iSetting
+    abstract class BaseExecutor : iExecutor
     {
         public abstract bool CanExecute { get; }
-
-        public abstract bool IsLocalFile { get; }
-
-        public abstract iSetter[] SettingItems { get; }
+        public bool IsEnabled { get; } = true;
 
         public abstract bool Execute();
-
-        public abstract bool OpenContainFolder();
+        
     }
 }

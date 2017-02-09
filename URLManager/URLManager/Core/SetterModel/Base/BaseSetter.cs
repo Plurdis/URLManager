@@ -9,14 +9,12 @@ using static URLManager.Global.Globals;
 
 namespace URLManager.Core.Setter.Base
 {
-    abstract class BaseSetter : iSetter
+    abstract class BaseSetter<TProperty, TDisplay> : iSetter<TProperty, TDisplay>
     {
-        public abstract object EditorValue { get; set; }
 
         public abstract EditorType DataEditor { get; }
-
-        public abstract Type DataType { get; }
-
-        public abstract object RealValue { get; set; }
+        
+        public abstract TDisplay DisplayValue { get; set; }
+        public abstract TProperty InnerProperty { get; set; }
     }
 }
