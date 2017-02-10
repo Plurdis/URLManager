@@ -1,0 +1,26 @@
+﻿[> Title : URL Manager Save File <]
+[> Version : 1.0 <]
+[> Write Time : 201602092359 <]
+
+
+[URLs]
+<Local URLs>
+{A Item}
+(TargetURL=C:\Users\uutak\Desktop\a.txt)
+(CanExecute=False)
+{B Item}
+(TargetURL=C:\Users\uutak\Desktop\b.txt)
+<Cloud URLs>
+{A Item}
+(TargetURL=http://www.naver.com)
+(CanExecute=False)
+(Description=abcdef)
+
+
+[Settings]
+<Local Setting>
+{User1}
+()
+
+
+[Users]

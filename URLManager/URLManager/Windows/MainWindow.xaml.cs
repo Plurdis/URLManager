@@ -17,6 +17,7 @@ using URLManager.Core.Executor;
 using URLManager.Core.Extension;
 using URLManager.Input.Keyboard.HotKey;
 using URLManager.Input.Keyboard.HotKey.Base;
+using URLManager.Stoargy;
 
 namespace URLManager
 {
@@ -36,6 +37,18 @@ namespace URLManager
             HotKeyManager.Add(hk);
             
             HotKeyManager.HotKeyPressed += KeyPressed;
+
+            LocalStoargy ls = new LocalStoargy();
+
+            ls.SetValue("A", "A", "A", "A", "E");
+            ls.SetValue("A", "A", "A", "A", "D");
+            ls.SetValue("A", "A", "A", "A", "F");
+
+            
+
+            //MessageBox.Show(ls.GetValue("A", "A", "A", "A").Value);
+
+
         }
 
         private void KeyPressed(BaseHotKey sender, HotKeyEventArgs e)

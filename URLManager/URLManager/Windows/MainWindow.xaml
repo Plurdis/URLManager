@@ -6,6 +6,6 @@
         xmlns:local="clr-namespace:URLManager"
         xmlns:Debug="clr-namespace:URLManager.Debug" x:Class="URLManager.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="300" Width="525">
     <Grid/>
 </Window>

@@ -1,4 +1,6 @@
-﻿using URLManager.Core.Executor;
+﻿using System;
+using URLManager.Core.Attribute;
+using URLManager.Core.Executor;
 
 namespace URLManager.Stoargy.Data
 {
@@ -11,16 +13,10 @@ namespace URLManager.Stoargy.Data
         [LocalData]
         public ProgramExecutor[] ProgramFiles { get; set; }
 
+        [LocalData]
         [CloudData]
         public URLExecutor[] URLs { get; set; }
     }
 
-    public class LocalDataAttribute : System.Attribute
-    {
 
-    }
-    public class CloudDataAttribute : System.Attribute
-    {
-        
-    }
 }
