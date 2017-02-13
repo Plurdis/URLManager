@@ -132,7 +132,7 @@
     <Compile Include="Core\Extension\EnumEx.cs" />
     <Compile Include="Core\Extension\ListEx.cs" />
     <Compile Include="Core\Extension\StoargyItemEx.cs" />
-    <Compile Include="Core\Interfaces\iSetterEditor.cs" />
+    <Compile Include="Core\Interfaces\ISetterEditor.cs" />
     <Compile Include="Core\SetterModel\BoolSetter.cs" />
     <Compile Include="Core\SetterModel\FileSetter.cs" />
     <Compile Include="Core\Executor\Base\BaseExecutor.cs" />
@@ -140,8 +140,8 @@
     <Compile Include="Core\Executor\ProgramExecutor.cs" />
     <Compile Include="Core\Executor\URLExecutor.cs" />
     <Compile Include="Core\EditorType.cs" />
-    <Compile Include="Core\Interfaces\iExecutor.cs" />
-    <Compile Include="Core\Interfaces\iSetter.cs" />
+    <Compile Include="Core\Interfaces\IExecutor.cs" />
+    <Compile Include="Core\Interfaces\ISetter.cs" />
     <Compile Include="Core\SetterModel\Base\BaseSetter.cs" />
     <Compile Include="Core\SetterModel\EnumSetter.cs" />
     <Compile Include="Core\SetterModel\StringSetter.cs" />

@@ -8,9 +8,26 @@ namespace URLManager.Core.Extension
 {
     static class ListEx
     {
-        public static T GetItem(this List<T> itm)
+        public static List<T> Copy<T>(this List<T> listitm)
         {
+            var list = new List<T>();
+            foreach (T obj in listitm)
+            {
+                list.Add(obj);
+            }
 
+            return list;
+        }
+
+        public static T[] Copy<T>(this T[] ArrayItm)
+        {
+            var arrlist = new List<T>();
+            foreach (T obj in arrlist)
+            {
+                arrlist.Add(obj);
+            }
+
+            return arrlist.ToArray();
         }
     }
 }

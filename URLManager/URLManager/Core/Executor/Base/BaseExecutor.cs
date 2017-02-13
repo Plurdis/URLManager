@@ -7,7 +7,7 @@ using URLManager.Core.Interfaces;
 
 namespace URLManager.Core.Executor.Base
 {
-    abstract class BaseExecutor : iExecutor
+    abstract class BaseExecutor : IExecutor
     {
         public abstract bool CanExecute { get; }
         public bool IsEnabled { get; } = true;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using URLManager.Core.Interfaces;
+using URLManager.Global;
 
 namespace URLManager.Core.Attribute
 {
@@ -12,6 +14,5 @@ namespace URLManager.Core.Attribute
     /// </summary>
     public class LocalDataAttribute : System.Attribute
     {
-
     }
 }

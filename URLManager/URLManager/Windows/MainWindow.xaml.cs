@@ -44,7 +44,7 @@ namespace URLManager
             ls.SetValue("A", "A", "A", "A", "D");
             ls.SetValue("A", "A", "A", "A", "F");
 
-            
+            ls.Save(new Stoargy.Data.StoargyData() { URLs = new List<URLExecutor>() { new URLExecutor("www.naver.com") } }, false);
 
             //MessageBox.Show(ls.GetValue("A", "A", "A", "A").Value);
 

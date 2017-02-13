@@ -8,7 +8,7 @@ using static URLManager.Global.Globals;
 namespace URLManager.Core.Interfaces
 {
     // 사용 클래스들은 Core/SetterModel에 정의되어 있음
-    interface iSetter<TProperty, TDisplay>
+    interface ISetter<TProperty, TDisplay>
     {
         TProperty InnerProperty { get; set; }
 

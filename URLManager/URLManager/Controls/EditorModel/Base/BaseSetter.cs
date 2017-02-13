@@ -8,7 +8,7 @@ using URLManager.Core.Interfaces;
 
 namespace URLManager.Controls.SetterEditor.Base
 {
-    public abstract class BaseEditor : Control, iSetterEditor
+    public abstract class BaseEditor : Control, ISetterEditor
     {
     }
 }

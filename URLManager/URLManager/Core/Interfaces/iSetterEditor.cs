@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace URLManager.Core.Interfaces
 {
-    interface iSetterEditor
+    interface ISetterEditor
     {
     }
 }

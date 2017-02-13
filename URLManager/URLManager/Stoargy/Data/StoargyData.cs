@@ -1,21 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using URLManager.Core.Attribute;
 using URLManager.Core.Executor;
+using URLManager.Core.Interfaces;
+using URLManager.Global;
 
 namespace URLManager.Stoargy.Data
 {
 
     class StoargyData
     {
-        [LocalData]
-        public LocalFileExecutor[] LocalFiles { get; set; }
 
         [LocalData]
-        public ProgramExecutor[] ProgramFiles { get; set; }
+        public List<LocalFileExecutor> LocalFiles { get; set; }
+
+        [LocalData]
+        public List<ProgramExecutor> ProgramFiles { get; set; }
 
         [LocalData]
         [CloudData]
-        public URLExecutor[] URLs { get; set; }
+        public List<URLExecutor> URLs { get; set; }
     }
 
 

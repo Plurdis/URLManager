@@ -10,6 +10,9 @@ using URLManager.Core.Setter;
 
 namespace URLManager.Core.Executor
 {
+    /// <summary>
+    /// URL과 같은 링크를 실행시키는 실행자입니다.
+    /// </summary>
     class URLExecutor : BaseExecutor
     {
         public URLExecutor(string urllink)
