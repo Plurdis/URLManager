@@ -1,0 +1,76 @@
+﻿<Window x:Name="Wdw" x:Class="URLManager.Windows.LinkSelectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:c="clr-namespace:URLManager.Controls"
+        xmlns:local="clr-namespace:URLManager.Windows"
+        mc:Ignorable="d"
+        Title="링크 목록" Height="700" Width="1000" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.Effect>
+            <DropShadowEffect Color="White" ShadowDepth="0"/>
+        </Grid.Effect>
+
+        <Rectangle x:Name="DragRect" Fill="#FF2B2B2B" Height="30" MouseDown="DragRect_MouseDown"/>
+        <TextBlock Text="{Binding ElementName=Wdw, Path=Title}" Foreground="White" Margin="10,0" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" IsHitTestVisible="False"/>
+
+        <Grid Grid.Row="1">
+            <Rectangle Fill="#7FFFFFFF"/>
+            <Border x:Name="brder" BorderThickness="5,0,5,5" BorderBrush="#FF2B2B2B"/>
+            <Grid Margin="{Binding ElementName=brder, Path=BorderThickness}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Margin="5" Background="AliceBlue">
+                    <WrapPanel>
+                        <c:ContentItem x:Name="btnItmAdd" Content="아이템 추가" Source="/URLManager;component/Resources/CategoryIcon/AddIcon.png" Click="btnItmAdd_Click"/>
+                        <c:ContentItem x:Name="btnItmRemove" Content="아이템 제거" Source="/URLManager;component/Resources/CategoryIcon/RemoveIcon.png" Click="btnItmRemove_Click"/>
+                        <c:ContentItem x:Name="itmCategorySet" Content="카테고리 설정" Width="90" Source="/URLManager;component/Resources/CategoryIcon/WidgetIcon.png"/>
+                    </WrapPanel>
+
+                </Border>
+                <ScrollViewer x:Name="sv" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <WrapPanel x:Name="ItemPanel" Margin="5">
+                        <!--<c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/VisibleIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/VideoCamIcon.png"/>
+                        <c:ContentItem Content="Volume Setting&#x0a;asdfasdf" Source="/URLManager;component/Resources/CategoryIcon/FindIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/WarnIcon.png"/>
+                        <c:ContentItem Content="Volume Setting&#x0a;asdfasdf" Source="/URLManager;component/Resources/CategoryIcon/WidgetIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/AlarmIcon.png"/>
+                        <c:ContentItem Content="Volume Setting&#x0a;asdfasdf" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting&#x0a;asdfasdf" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting&#x0a;asdfasdf" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting&#x0a;asdfasdf" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting&#x0a;asdfasdf" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting&#x0a;asdfasdf" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting&#x0a;asdfasdf" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting&#x0a;asdfasdf" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>
+                        <c:ContentItem Content="Volume Setting&#x0a;asdfasdf" Source="/URLManager;component/Resources/CategoryIcon/VolIcon.png"/>-->
+                    </WrapPanel>
+                </ScrollViewer>
+                <TextBlock x:Name="TBAddInfo" Text="바로가기 아이템이 없습니다. 상단의 아이템 추가 버튼을 눌러서 추가해보세요." Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+
+
+        </Grid>
+        <Image x:Name="image" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top" Width="30" Source="/URLManager;component/Resources/CategoryIcon/CloseBtn.png" MouseDown="CloseEvent"/>
+            <!--<Rectangle Stroke="Black" StrokeThickness="1" Grid.RowSpan="2"/>-->
+
+    </Grid>
+</Window>
