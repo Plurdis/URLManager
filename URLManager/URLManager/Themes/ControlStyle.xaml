@@ -2,8 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:URLManager.Themes"
                     xmlns:c="clr-namespace:URLManager.Controls"
+                    xmlns:g="clr-namespace:URLManager.Global"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib"
                     xmlns:se="clr-namespace:URLManager.Controls.SetterEditor">
-
+    <!--SettingEditor Style-->
+    
     <Style x:Key="SettingEditorStyle" TargetType="{x:Type c:SettingEditor}">
         <Setter Property="Template">
             <Setter.Value>
@@ -18,5 +21,190 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
+    <!--CategoryItem Style-->
+
+    <Style x:Key="CategoryItemStyle" TargetType="{x:Type c:CategoryItem}">
+        <Setter Property="g:MouseDownHelper.IsEnabled" Value="True"/>
+        <!--<Setter Property="Width" Value="80"/>
+        <Setter Property="Height" Value="120"/>-->
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type c:CategoryItem}">
+                    <Grid x:Name="BgGrid" Background="{TemplateBinding Background}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Image Grid.Row="0" Margin="5" Source="{TemplateBinding Source}"/>
+                        <Rectangle Fill="White" Grid.Row="1" Width="{Binding ElementName=TB, Path=Width}"/>
+                        <TextBlock x:Name="TB" Text="{TemplateBinding Content}" Grid.Row="1" TextAlignment="Center" Margin="2" VerticalAlignment="Center" TextTrimming="CharacterEllipsis">
+                            <TextBlock.ToolTip>
+                                <ToolTip Content="{TemplateBinding Content}"/>
+                            </TextBlock.ToolTip>
+                        </TextBlock>
+                    </Grid>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#7FFFFFFF" TargetName="BgGrid"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     
+    <!--ContentItem Style-->
+
+    <Style x:Key="ContentItemStyle" TargetType="{x:Type c:ContentItem}">
+        <Setter Property="g:MouseDownHelper.IsEnabled" Value="True"/>
+        <Setter Property="Width" Value="70"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type c:ContentItem}">
+                    <Grid x:Name="BgGrid" Background="{TemplateBinding Background}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Image Grid.Row="0" Margin="5" Source="{TemplateBinding Source}"/>
+                        <TextBlock x:Name="TB" Text="{TemplateBinding Content}" Grid.Row="1" TextAlignment="Center" Margin="2" VerticalAlignment="Center" TextTrimming="CharacterEllipsis">
+                            <TextBlock.ToolTip>
+                                <ToolTip Content="{TemplateBinding Content}"/>
+                            </TextBlock.ToolTip>
+                        </TextBlock>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#7F267DC5" TargetName="BgGrid"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#7F175385" TargetName="BgGrid"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    
+    <!--ImageLabel Style-->
+    
+    <Style x:Key="ImageLabelStyle" TargetType="{x:Type c:ImageLabel}">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type c:ImageLabel}">
+                    <Grid Height="20" MinWidth="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Rectangle RadiusX="10" RadiusY="10" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1" Grid.ColumnSpan="2"/>
+                        <Image Width="15" Height="15" Margin="5,0,5,0" Source="{TemplateBinding Source}"/>
+
+                        <TextBlock Grid.Column="1" Text="{TemplateBinding Content}" Margin="0,0,5,0" TextAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    
+    <!--#region Resources (ImageLabel)-->
+    <SolidColorBrush x:Key="LocalBackgroundBrush">#6AC94E</SolidColorBrush>
+    <SolidColorBrush x:Key="CloudBackgroundBrush">#FFBEE7F7</SolidColorBrush>
+    <SolidColorBrush x:Key="EnvDependentBrush">#9AA2F6</SolidColorBrush>
+    <SolidColorBrush x:Key="EnvFreeBrush">#ffffe0</SolidColorBrush>
+    
+
+    <s:String x:Key="LocalString">로컬 저장</s:String>
+    <s:String x:Key="CloudString">클라우드 저장</s:String>
+    <s:String x:Key="EnvDependentString">환경의 영향 받음</s:String>
+    <s:String x:Key="EnvFreeString">환경으로부터 자유</s:String>
+
+    <BitmapImage x:Key="LocalImage" UriSource="/URLManager;component/Resources/CategoryIcon/ComputerIcon.png"/>
+    <BitmapImage x:Key="CloudImage" UriSource="/URLManager;component/Resources/CategoryIcon/CloudIcon.png"/>
+    <BitmapImage x:Key="EnvDependentImage" UriSource="/URLManager;component/Resources/CategoryIcon/ComputerIcon.png"/>
+    <BitmapImage x:Key="EnvFreeImage" UriSource="/URLManager;component/Resources/CategoryIcon/CloudIcon.png"/>
+    
+    <Style x:Key="LocalToolTip" TargetType="{x:Type ToolTip}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Rectangle Fill="LightGray" Stroke="Black" StrokeThickness="1"/>
+                        <TextBlock Margin="5">
+                            로컬 (사용자의 컴퓨터)에 저장되는 아이템입니다.
+                        </TextBlock>
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CloudToolTip" TargetType="{x:Type ToolTip}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Rectangle Fill="LightGray" Stroke="Black" StrokeThickness="1"/>
+                        <TextBlock Margin="5">
+                            클라우드(구글 드라이브와 같은 인터넷 저장소) 에 저장되는 아이템입니다.
+                        </TextBlock>
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="EnvDependentToolTip" TargetType="{x:Type ToolTip}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Rectangle Fill="LightGray" Stroke="Black" StrokeThickness="1"/>
+                        <TextBlock Margin="5">
+                            해당 아이템은 환경의 영향을 받습니다.<LineBreak/>
+                            즉, 해당 컴퓨터 환경이 아닌 다른 컴퓨터 환경에서 동작했을시에 실행이 되지 않을 가능성이 큽니다.
+                        </TextBlock>
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="EnvFreeToolTip" TargetType="{x:Type ToolTip}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid>
+                        <Rectangle Fill="LightGray" Stroke="Black" StrokeThickness="1"/>
+                        <TextBlock Margin="5">
+                            해당 아이템은 환경의 영향을 받지 않습니다.<LineBreak/>
+                            따라서, 다른 컴퓨터 환경에서 동작해도 정상적으로 동작할 가능성이 큽니다.
+                        </TextBlock>
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
 </ResourceDictionary>

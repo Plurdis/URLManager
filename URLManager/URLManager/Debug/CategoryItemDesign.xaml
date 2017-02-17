@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="URLManager.Debug.CategoryItemDesign"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:URLManager.Debug"
+             mc:Ignorable="d" 
+             Height="120" Width="80">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Margin="5" Source="/URLManager;component/Resources/CategoryIcon/EventIcon.png"/>
+        <TextBlock x:Name="TB" Text="Category 1asdfasdf" Grid.Row="1" TextAlignment="Center" Margin="2" VerticalAlignment="Center" TextTrimming="CharacterEllipsis">
+            <TextBlock.ToolTip>
+                <ToolTip Content="{Binding ElementName=TB, Path=Text}"/>
+            </TextBlock.ToolTip>
+        </TextBlock>
+        <!--&#x0a;-->
+        <!---->
+    </Grid>
+</UserControl>

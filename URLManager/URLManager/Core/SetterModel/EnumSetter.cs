@@ -6,38 +6,39 @@ using URLManager.Core.Setter.Base;
 
 namespace URLManager.Core.Setter
 {
-    class EnumSetter : BaseSetter<Enum[], Enum[]>
+    [Serializable]
+    class EnumSetter : ISetter<int[], int[]>
     {
-        public EnumSetter(List<Enum> listdata) : this(listdata.ToArray())
+        public EnumSetter(List<int> listdata) : this(listdata.ToArray())
         { }
-        public EnumSetter(Enum[] listdata)
+        public EnumSetter(int[] listdata)
         {
             ListData = listdata;
         }
 
-        Enum[] ListData;
+        int[] ListData;
 
         // TODO : 아래의 두가지 해결 후 EditorValue에 적용
         // Description To Enum
         // Enum To Description (해결)
-        public override Enum[] DisplayValue
+        public int[] DisplayValue
         {
             get { return ListData; }
             set { ListData = value; }
         }
 
-        public override EditorType DataEditor
+        public EditorType DataEditor
         {
             get { return EditorType.ListEnumString; }
         }
 
-        public override Enum[] InnerProperty
+        public int[] InnerProperty
         {
             get { return ListData; }
             set { ListData = value; }
         }
 
-        public Enum SelectedEnum
+        public int SelectedEnum
         {
             get { return ListData[SelectedIndex]; }
             

@@ -62,12 +62,15 @@
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Expression.Drawing, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -97,6 +100,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Debug\CategoryItemDesign.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Debug\ImageLabelDesign.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Debug\ListEditorDesign.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -113,6 +124,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\AddCategory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\LinkSelectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -121,11 +144,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\CategoryItem.cs" />
+    <Compile Include="Controls\ContentItem.cs" />
+    <Compile Include="Controls\ImageLabel.cs" />
     <Compile Include="Controls\SettingEditor.cs" />
     <Compile Include="Controls\EditorModel\BoolEditor.cs" />
     <Compile Include="Controls\EditorModel\EnumEditor.cs" />
     <Compile Include="Core\Attribute\CloudDataAttribute.cs" />
+    <Compile Include="Core\Attribute\ExecutorAttribute.cs" />
     <Compile Include="Core\Attribute\LocalDataAttribute.cs" />
+    <Compile Include="Core\Collection\ChangeAction.cs" />
+    <Compile Include="Core\Collection\NotifyList.cs" />
+    <Compile Include="Core\Collection\NotifyListEventArgs.cs" />
     <Compile Include="Core\Executor\BrowserKind.cs" />
     <Compile Include="Controls\EditorModel\Base\BaseSetter.cs" />
     <Compile Include="Controls\EditorModel\StringEditor.cs" />
@@ -145,8 +175,16 @@
     <Compile Include="Core\SetterModel\Base\BaseSetter.cs" />
     <Compile Include="Core\SetterModel\EnumSetter.cs" />
     <Compile Include="Core\SetterModel\StringSetter.cs" />
+    <Compile Include="Data\CategoryData.cs" />
+    <Compile Include="Data\CategoryManager.cs" />
     <Compile Include="Debug\BoolEditorDesign.xaml.cs">
       <DependentUpon>BoolEditorDesign.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Debug\CategoryItemDesign.xaml.cs">
+      <DependentUpon>CategoryItemDesign.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Debug\ImageLabelDesign.xaml.cs">
+      <DependentUpon>ImageLabelDesign.xaml</DependentUpon>
     </Compile>
     <Compile Include="Debug\ListEditorDesign.xaml.cs">
       <DependentUpon>ListEditorDesign.xaml</DependentUpon>
@@ -157,16 +195,31 @@
     <Compile Include="Debug\StringEditorDesign.xaml.cs">
       <DependentUpon>StringEditorDesign.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileHelper\FileExtensions.cs" />
     <Compile Include="Global\Globals.cs" />
+    <Compile Include="Global\MouseDownHelper.cs" />
     <Compile Include="Input\Keyboard\HotKey\Base\BaseHotKey.cs" />
     <Compile Include="Input\Keyboard\HotKey\HotKeyEventArgs.cs" />
     <Compile Include="Input\Keyboard\HotKey\HotKeyManager.cs" />
     <Compile Include="Input\Keyboard\HotKey\DoubleHotKey.cs" />
     <Compile Include="Input\Keyboard\HotKey\Base\iHotKey.cs" />
     <Compile Include="Input\Keyboard\HotKey\GeneralHotKey.cs" />
+    <Compile Include="Serialization\Deserializer.cs" />
+    <Compile Include="Serialization\Serializer.cs" />
     <Compile Include="Stoargy\Base\BaseStoargy.cs" />
     <Compile Include="Stoargy\Data\StoargyData.cs" />
     <Compile Include="Stoargy\LocalStoargy.cs" />
+    <Compile Include="Stoargy\StoargyItem.cs" />
+    <Compile Include="Stoargy\StoargyItemList.cs" />
+    <Compile Include="Windows\AddCategory.xaml.cs">
+      <DependentUpon>AddCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddItem.xaml.cs">
+      <DependentUpon>AddItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\LinkSelectWindow.xaml.cs">
+      <DependentUpon>LinkSelectWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -203,6 +256,56 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Stoargy\LocalStoargyExample.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Icons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CategoryIcon\AlarmIcon.png" />
+    <Resource Include="Resources\CategoryIcon\AlbumIcon.png" />
+    <Resource Include="Resources\CategoryIcon\AllIcon.png" />
+    <Resource Include="Resources\CategoryIcon\BookMarkIcon.png" />
+    <Resource Include="Resources\CategoryIcon\CloudIcon.png" />
+    <Resource Include="Resources\CategoryIcon\EmailIcon.png" />
+    <Resource Include="Resources\CategoryIcon\EventIcon.png" />
+    <Resource Include="Resources\CategoryIcon\FindIcon.png" />
+    <Resource Include="Resources\CategoryIcon\GameIcon.png" />
+    <Resource Include="Resources\CategoryIcon\MediaIcon.png" />
+    <Resource Include="Resources\CategoryIcon\MusicIcon.png" />
+    <Resource Include="Resources\CategoryIcon\SpeakerIcon.png" />
+    <Resource Include="Resources\CategoryIcon\StoreIcon.png" />
+    <Resource Include="Resources\CategoryIcon\TransformIcon.png" />
+    <Resource Include="Resources\CategoryIcon\TranslateIcon.png" />
+    <Resource Include="Resources\CategoryIcon\TrendIcon.png" />
+    <Resource Include="Resources\CategoryIcon\VideoCamIcon.png" />
+    <Resource Include="Resources\CategoryIcon\VideoIcon.png" />
+    <Resource Include="Resources\CategoryIcon\VisibleIcon.png" />
+    <Resource Include="Resources\CategoryIcon\VoiceChatIcon.png" />
+    <Resource Include="Resources\CategoryIcon\VolIcon.png" />
+    <Resource Include="Resources\CategoryIcon\WarnIcon.png" />
+    <Resource Include="Resources\CategoryIcon\WidgetIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CategoryIcon\ComputerIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CategoryIcon\AddIcon.png" />
+    <Resource Include="Resources\CategoryIcon\RemoveIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HearthstoneDeckTracker16.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ShortCutIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ShortCutIcon2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CategoryIcon\CloseIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CategoryIcon\CloseBtn.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

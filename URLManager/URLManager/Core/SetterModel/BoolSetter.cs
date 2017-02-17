@@ -1,8 +1,10 @@
-﻿using URLManager.Core.Interfaces;
+﻿using System;
+using URLManager.Core.Interfaces;
 using URLManager.Core.Setter.Base;
 
 namespace URLManager.Core.Setter
 {
+    [Serializable]
     class BoolSetter : BaseSetter<bool,bool>
     {
         public BoolSetter(bool boolValue)

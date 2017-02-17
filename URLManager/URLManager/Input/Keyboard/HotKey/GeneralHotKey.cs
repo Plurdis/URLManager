@@ -15,6 +15,11 @@ namespace URLManager.Input.Keyboard.HotKey
             ModifierKey = modifierkey;
             SubKeys = subkeys;
         }
+        public GeneralHotKey(Key modifierkey)
+        {
+            ModifierKey = modifierkey;
+            SubKeys = new Key[] { };
+        }
         public GeneralHotKey()
         {
 

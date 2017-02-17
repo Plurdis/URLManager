@@ -12,14 +12,14 @@ namespace URLManager.Core.Extension
     {
         public static string GetDescription(this Enum enumData)
         {
+            
             DescriptionAttribute attribute = enumData.GetType()
                         .GetField(enumData.ToString())
                         .GetCustomAttributes(typeof(DescriptionAttribute), false)
                         .SingleOrDefault() as DescriptionAttribute;
             return attribute == null ? enumData.ToString() : attribute.Description;
         }
-
-
-        
     }
 }
+
+

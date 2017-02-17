@@ -9,9 +9,9 @@ using static URLManager.Global.Globals;
 
 namespace URLManager.Core.Setter.Base
 {
+    [Serializable]
     abstract class BaseSetter<TProperty, TDisplay> : ISetter<TProperty, TDisplay>
     {
-
         public abstract EditorType DataEditor { get; }
         
         public abstract TDisplay DisplayValue { get; set; }

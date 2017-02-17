@@ -15,7 +15,7 @@ namespace URLManager.Stoargy.Base
         public abstract bool Load(out StoargyData data);
 
         public event BlankEvent OverrideDetect;
-            //OverrideDetect
+        //OverrideDetect
 
 
         internal void OnOverrideDetect()
@@ -23,4 +23,4 @@ namespace URLManager.Stoargy.Base
             if (OverrideDetect != null) OverrideDetect();
         }
     }
-    }
+}

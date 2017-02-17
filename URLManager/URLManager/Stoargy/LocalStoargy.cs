@@ -4,221 +4,253 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using URLManager.Core.Attribute;
 using URLManager.Core.Executor;
 using URLManager.Core.Executor.Base;
-using URLManager.Core.Extension;
 using URLManager.Stoargy.Base;
 using URLManager.Stoargy.Data;
-using static URLManager.Core.Extension.StoargyItemEx;
 
 namespace URLManager.Stoargy
 {
     class LocalStoargy : BaseStoargy
     {
-
-        public struct StoargyItem
+        public LocalStoargy(string FileLocation = "URLManager.urlset")
         {
-            public StoargyItem(string groupType, string section, string group, string key, string value)
-            {
-                GroupType = groupType;
-                Section = section;
-                Group = group;
-                Key = key;
-                Value = value;
-            }
-            public string GroupType;
-            public string Section;
-            public string Group;
-            public string Key;
 
-            public string Value;
+            this.FileLocation = new FileInfo(FileLocation).FullName;
 
-            public override bool Equals(object obj)
-            {
-                try
-                {
-                    return this == (StoargyItem)obj;
-                }
-                catch (Exception)
-                {
-                    return (object)this == obj;
-                }
-                
-            }
-
-            public override int GetHashCode()
-            {
-                return Key.GetHashCode();
-            }
-
-
-
-
-            public static StoargyItem Empty = new StoargyItem("", "", "", "", "");
-
-            public static bool operator ==(StoargyItem Left, StoargyItem Right)
-            {
-                if (Left.GroupType == Right.GroupType &&
-                    Left.Section == Right.Section &&
-                    Left.Group == Right.Group &&
-                    Left.Key == Right.Key) return true;
-
-                return false;
-            }
-
-            public static bool operator !=(StoargyItem Left, StoargyItem Right)
-            {
-                if (Left.GroupType == Right.GroupType &&
-                    Left.Section == Right.Section &&
-                    Left.Group == Right.Group &&
-                    Left.Key == Right.Key) return false;
-
-                return true;
-            }
+            list = new StoargyItemList();
         }
-        
 
         #region [   변수   ]
-        
+
         /// <summary>저장될 파일의 정보입니다.</summary>
-        private FileInfo saveFile;
+        public string FileLocation { get; set; }
+
+        public StoargyItemList list;
+
+        StreamWriter sw;
+
+        private string UnknownStr = "UnknownData\\";
 
         #endregion
 
-
-        public List<StoargyItem> Items;
-        StreamWriter sw;
-
-
-        public LocalStoargy(string FileLocation = "URLManager.urlset")
-        {
-            sw = new StreamWriter(FileLocation, false, Encoding.Unicode);
-
-            Items = new List<StoargyItem>();
-        }
-
         public override bool Load(out StoargyData data)
         {
-            throw new NotImplementedException();
+            StreamReader sr = new StreamReader(FileLocation);
+
+            data = new StoargyData();
+            
+            string filedata = "";
+
+            try
+            {
+                filedata = Encoding.Default.GetString(Convert.FromBase64String(sr.ReadToEnd()));
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("파일을 읽던 중에 내부 구조적으로 오류가 발생했습니다.\n더이상 읽어올 수 없습니다. 파일이 손상된 것 같습니다." +
+                    "\n\n상세 정보 : 인코딩된 문자열을 디코딩 시키던 중에 문제가 발생했습니다. 파일이 임의적으로 변경된 것 같습니다.");
+            }
+
+
+            var spDatas = new Tuple<string, string>[] { new Tuple<string, string>("[","]"), new Tuple<string, string>("<", ">"),
+                                                        new Tuple<string, string>("{", "}"), new Tuple<string, string>("(", ")")};
+
+            string gt = UnknownStr, s = UnknownStr, g = UnknownStr;
+
+
+            foreach (string d in filedata.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
+            {
+                if (d == null) continue;
+
+                foreach (var spData in spDatas)
+                {
+                    if (d.StartsWith(spData.Item1) && d.EndsWith(spData.Item2))
+                    {
+                        string str = d.Substring(1, d.Length - 2);
+                        switch (spData.Item1)
+                        {
+                            case "[":
+                                //MessageBox.Show("GroupType Detect! Content : " + str);
+
+                                gt = str;
+                                break;
+                            case "<":
+                                //MessageBox.Show("Section Detect! Content : " + str);
+
+                                s = str;
+                                if (gt == UnknownStr)
+                                    MessageBox.Show("파일을 읽던 중에 내부 구조적으로 오류가 발생했습니다.\n더이상 읽어올 수 없습니다. 파일이 손상된 것 같습니다." +
+                                                    "\n\n상세 정보 : GroupType이 정의되지 않은 상태에서 Section이 감지되었습니다. 파일의 오류이거나 코드 상의 문제일 가능성도 있습니다.");
+                                break;
+                            case "{":
+                                //MessageBox.Show("Group Detect! Content : " + str);
+
+                                g = str;
+                                if (gt == UnknownStr || s == UnknownStr)
+                                    MessageBox.Show("파일을 읽던 중에 내부 구조적으로 오류가 발생했습니다.\n더이상 읽어올 수 없습니다. 파일이 손상된 것 같습니다." +
+                                                    "\n\n상세 정보 : GroupType이나 Section이 정의되지 않은 상태에서 Group이 감지되었습니다. 파일의 오류이거나 코드 상의 문제일 가능성도 있습니다.");
+                                break;
+                            case "(":
+                                //MessageBox.Show("Key + Value Detect! Content : " + str);
+
+                                if (gt == UnknownStr || s == UnknownStr || g == UnknownStr)
+                                    MessageBox.Show("파일을 읽던 중에 내부 구조적으로 오류가 발생했습니다.\n더이상 읽어올 수 없습니다. 파일이 손상된 것 같습니다." +
+                                                    "\n\n상세 정보 : GroupType이나 Section, 혹은 Group이 정의되지 않은 상태에서 KeyValue이 감지되었습니다. 파일의 오류이거나 코드 상의 문제일 가능성도 있습니다.");
+
+
+                                string ptn = "(.+?)=(.+)";
+
+                                if (!Regex.IsMatch(str, ptn)) return false;
+
+
+                                GroupCollection gc = Regex.Match(str, ptn).Groups;
+
+                                string Key, Value;
+
+                                Key = gc[1].Value;
+                                Value = gc[2].Value;
+
+                                list.SetValue(gt, s, g, Key, Value);
+
+                                break;
+                        }
+                    }
+                    else continue;
+                }
+            }
+
+
+
+            foreach (var itm in list)
+            {
+                switch (itm.GroupType)
+                {
+                    case "Executor":
+
+                        switch (itm.Section)
+                        {
+                            case "LocalFileExecutor":
+
+                                break;
+                            case "ProgramExecutor":
+                                ProgramExecutor programexe;
+
+                                break;
+                            case "URLExecutor":
+                                URLExecutor urlexe;
+
+                                break;
+                        }
+
+                        break;
+                }
+            }
+
+
+
+            return true;
         }
 
         public override bool Save(StoargyData data, bool CheckOverride)
         {
             if (CheckOverride) OnOverrideDetect();
 
-            // 정의된 Property 리스트
-            string[] Props = { "LocalFiles", "ProgramFiles", "URLs" };
-
-            foreach(string PropName in Props)
+            // Property 읽어오기
+            foreach (PropertyInfo PropInfo in data.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
             {
+                bool flag = false;
 
-                PropertyInfo fi = data.GetType().GetProperty(PropName, BindingFlags.Public | BindingFlags.Instance |
-                                                           BindingFlags.FlattenHierarchy);
-                MessageBox.Show(fi.Name);
-
-                foreach (var itm in fi.CustomAttributes)
+                foreach (var itm in PropInfo.CustomAttributes)
                 {
-
                     Type t = itm.AttributeType;
 
-                    if (t == typeof(LocalDataAttribute))
+                    if (t == typeof(ExecutorAttribute)) flag = true;
+
+                    if (t == typeof(LocalDataAttribute) && flag)
                     {
-                        // 로컬 데이터 특성 감지시
 
+                        var value = (List<BaseExecutor>)PropInfo.GetValue(data, null);
 
-                        if (fi.PropertyType == typeof(List<URLExecutor>))
+                        if (value != null)
                         {
-                            MessageBox.Show("!");
+                            foreach (BaseExecutor executor in value)
+                            {
+                                if (executor.GetType() == typeof(LocalFileExecutor))
+                                {
+                                    LocalFileExecutor localExecutor = (LocalFileExecutor)executor;
 
+                                    list.SetValue("Executor", "LocalFileExecutor", localExecutor.Name, "CanExecute", localExecutor.CanExecute.ToString());
+                                    list.SetValue("Executor", "LocalFileExecutor", localExecutor.Name, "Path", localExecutor.Path);
+                                }
+                                else if (executor.GetType() == typeof(ProgramExecutor))
+                                {
+                                    ProgramExecutor progrmExecutor = (ProgramExecutor)executor;
+
+                                    list.SetValue("Executor", "ProgramExecutor", progrmExecutor.Name, "CanExecute", progrmExecutor.CanExecute.ToString());
+                                    list.SetValue("Executor", "ProgramExecutor", progrmExecutor.Name, "Path", progrmExecutor.Path);
+                                }
+                                else if (executor.GetType() == typeof(URLExecutor))
+                                {
+                                    URLExecutor urlExecutor = (URLExecutor)executor;
+
+                                    list.SetValue("Executor", "URLExecutor", urlExecutor.Name, "CanExecute", urlExecutor.CanExecute.ToString());
+                                    list.SetValue("Executor", "URLExecutor", urlExecutor.Name, "TargetURL", urlExecutor.URLLink);
+                                }
+
+                                // Executor 추가시 추가해야 할 부분
+                            }
                         }
+
                         break;
                     }
                 }
             }
-            
+
+            // 파일로부터 저장 시작 지점
+
+
+            IEnumerable<StoargyItem> it = list.OrderBy(i => i.GroupType).ThenBy(i => i.Section).ThenBy(i => i.Group).ThenBy(i => i.Key);
+
+            string gt = UnknownStr, s = UnknownStr, g = UnknownStr;
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var itm in it)
+            {
+                if (gt != itm.GroupType)
+                {
+                    gt = itm.GroupType;
+                    sb.AppendLine($"[{itm.GroupType}]");
+                }
+                if (s != itm.Section)
+                {
+                    s = itm.Section;
+                    sb.AppendLine($"<{itm.Section}>");
+                }
+                if (g != itm.Group)
+                {
+                    g = itm.Group;
+                    sb.AppendLine($"{{{itm.Group}}}");
+                }
+
+                sb.AppendLine($"({itm.Key}={itm.Value})");
+            }
+
+            string strdata = Convert.ToBase64String(Encoding.UTF8.GetBytes(sb.ToString()));
+
+            //MessageBox.Show(strdata);
+            //MessageBox.Show(Encoding.Default.GetString(Convert.FromBase64String(strdata)));
+
+            sw = new StreamWriter(FileLocation);
+            sw.Write(strdata);
+            sw.Dispose();
 
             return true;
-        }
-
-        /// <summary>
-        /// 값을 설정합니다. 단, 그룹 타입, 섹션, 그룹, 키는 없더라도 자동 생성됩니다.
-        /// </summary>
-        /// <param name="GroupType">[]로 묶여있는 아이템입니다. 최상위 아이템입니다.</param>
-        /// <param name="Section">&lt;&gt;로 묶여있는 아이템입니다.</param>
-        /// <param name="Group">{}로 묶여있는 아이템입니다.</param>
-        /// <param name="Key">(Key=Value) 형태의 Key 부분의 값입니다.</param>
-        /// <param name="Value">(Key=Value) 형태의 Value 부분의 값입니다.</param>
-        public bool SetValue(string GroupType, string Section, string Group, string Key, string Value)
-        {
-            try
-            {
-                var itm = new StoargyItem(GroupType, Section, Group, Key, Value);
-                if (Items.ContainsBox(itm)) Items.Remove(Items.GetBox(itm));
-                Items.Add(itm);
-            }
-            catch (Exception)
-            { return false; }
-            
-            return true;
-        }
-
-
-        public StoargyItem GetValue(string GroupType,string Section, string Group, string Key)
-        {
-            foreach (StoargyItem Item in Items)
-            {
-                if (GroupType == Item.GroupType &&
-                    Section == Item.Section &&
-                    Group == Item.Group &&
-                    Key == Item.Key)
-                    return Item;
-            }
-            
-            return StoargyItem.Empty;
-        }
-
-        public bool RemoveValue(string GroupType, string Section, string Group, string Key)
-        {
-            var itm = new StoargyItem(GroupType, Section, Group, Key, "");
-            if (Items.ContainsBox(itm)) return Items.Remove(Items.GetBox(itm));
-
-            return false;
-        }
-
-        public bool RemoveGroup(string GroupType, string Section, string Group)
-        {
-            bool Flag = false;
-
-            foreach (StoargyItem itm in Items.Copy())
-            {
-                if (itm.GroupType == GroupType && itm.Section == Section && itm.Group == Group)
-                {
-                    Items.Remove(itm);
-                    Flag = true;
-                }
-            }
-
-            return Flag;
-        }
-
-        public bool RemoveSection(string GroupType, string Section)
-        {
-            bool Flag = false;
-
-            foreach (StoargyItem itm in Items.Copy())
-            {
-                if (itm.GroupType == GroupType && itm.Section == Section)
-                {
-                    Items.Remove(itm);
-                    Flag = true;
-                }
-            }
-
-            return Flag;
         }
     }
-    
 }

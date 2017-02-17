@@ -4,42 +4,59 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using URLManager.Core.Executor.Base;
 using URLManager.Core.Interfaces;
 using URLManager.Core.Setter;
+using static URLManager.Global.Globals;
 
 namespace URLManager.Core.Executor
 {
     /// <summary>
     /// URL과 같은 링크를 실행시키는 실행자입니다.
     /// </summary>
-    class URLExecutor : BaseExecutor
+    [Serializable]
+    public class URLExecutor : BaseExecutor
     {
-        public URLExecutor(string urllink)
+        public URLExecutor(string urllink, string Name)
         {
-            URLLink = urllink;
+            if (!urllink.StartsWith("http://")) urllink = "http://" + urllink;
+            _URLLink = urllink;
+            this.Name = Name;
         }
 
-
-        string URLLink;
+        string _URLLink;
+        public string URLLink
+        {
+            get { return _URLLink; }
+            set { _URLLink = value; }
+        }
 
         public override bool CanExecute
         {
             get
             {
                 Uri uriResult;
-                bool result = Uri.TryCreate(URLLink, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
+                bool result = Uri.TryCreate(_URLLink, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
 
                 return result;
             }
         }
-        
 
+        public override ImageSource Icon
+        {
+            get
+            {
+                return GetImageFromURL(URLLink);
+            }
+        }
+
+        //EnumSetter BrowserSetter = new EnumSetter(new List<Enum>());
         EnumSetter BrowserSetter = new EnumSetter(
-            new Enum[] { BrowserKind.InternetExplorer,
-                         BrowserKind.Chrome,
-                         BrowserKind.Firefox });
-        
+            new int[] { (int)BrowserKind.InternetExplorer,
+                        (int)BrowserKind.Chrome,
+                        (int)BrowserKind.Firefox });
+
         public override bool Execute()
         {
             if (!CanExecute) return false;
@@ -47,13 +64,13 @@ namespace URLManager.Core.Executor
             switch (((BrowserKind)BrowserSetter.SelectedEnum))
             {
                 case BrowserKind.InternetExplorer:
-                    Process.Start("iexplore", $"{URLLink}");
+                    Process.Start("iexplore", $"{_URLLink}");
                     break;
                 case BrowserKind.Chrome:
-                    Process.Start("chrome", $"{URLLink} --new-window");
+                    Process.Start("chrome", $"{_URLLink} --new-window");
                     break;
                 case BrowserKind.Firefox:
-                    Process.Start("firefox", $"{URLLink}");
+                    Process.Start("firefox", $"{_URLLink}");
                     break;
             }
 

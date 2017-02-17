@@ -16,6 +16,11 @@ namespace URLManager.Input.Keyboard.HotKey
         private static List<BaseHotKey> hkList;
         private static Dictionary<string, string> holdDict;
 
+        private static void OnHotKeyPressed(BaseHotKey sender, HotKeyEventArgs e)
+        {
+            if (HotKeyPressed != null) HotKeyPressed(sender, e);
+        }
+
         static HotKeyManager()
         {
             Init();
@@ -47,6 +52,8 @@ namespace URLManager.Input.Keyboard.HotKey
         static int TimeCount = 0;
 
         private static input.Key LastKey = input.Key.None;
+        private static bool Ignoring = false;
+
         private static void TimerTick(object sender, EventArgs e)
         {
             foreach (BaseHotKey hk in hkList.AvailableKeys())
@@ -69,7 +76,8 @@ namespace URLManager.Input.Keyboard.HotKey
 
                             if (!Flag) continue;
 
-                            HotKeyPressed(hk, new HotKeyEventArgs() { HotKeyType = typeof(GeneralHotKey) });
+                            OnHotKeyPressed(hk, new HotKeyEventArgs() { HotKeyType = typeof(GeneralHotKey) });
+                            hk.OnPressed(hk, new HotKeyEventArgs() { HotKeyType = typeof(GeneralHotKey) });
                         }
                         break;
                     case "DoubleHotKey":
@@ -81,8 +89,12 @@ namespace URLManager.Input.Keyboard.HotKey
 
                             if (LastKey == dhk.FirstKey && input.Keyboard.IsKeyDown(dhk.SecondKey) && LastKey != input.Key.None && !dhk.Pressing)
                             {
-                                HotKeyPressed(hk, new HotKeyEventArgs() { HotKeyType = typeof(DoubleHotKey) });
                                 LastKey = input.Key.None;
+
+                                OnHotKeyPressed(hk, new HotKeyEventArgs() { HotKeyType = typeof(DoubleHotKey) });
+                                hk.OnPressed(hk, new HotKeyEventArgs() { HotKeyType = typeof(DoubleHotKey) });
+
+                                Ignoring = true;
                             }
                             else if (input.Keyboard.IsKeyUp(dhk.FirstKey))
                             {
@@ -91,8 +103,9 @@ namespace URLManager.Input.Keyboard.HotKey
                             else if (input.Keyboard.IsKeyDown(dhk.FirstKey) && !dhk.Pressing)
                             {
                                 dhk.Pressing = true;
-                                LastKey = dhk.FirstKey;
-                                TimeCount = 0;
+                                if (!Ignoring) LastKey = dhk.FirstKey;
+                                else if (Ignoring) Ignoring = false;
+                                TimeCount = 0;   
                             }
                         }
                         break;
