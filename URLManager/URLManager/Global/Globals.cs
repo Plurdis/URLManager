@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,38 +79,56 @@ namespace URLManager.Global
 
         public static ImageSource GetImageFromURL(string urllink)
         {
-            if (!urllink.StartsWith("http://")) urllink = "http://" + urllink;
+            urllink = GetURLLink(urllink);
 
             Uri url = new Uri(urllink);
             WebRequest request = (HttpWebRequest)WebRequest.Create("http://" + url.Host + "/favicon.ico");
 
             Bitmap bm = new Bitmap(32, 32);
             MemoryStream memStream;
-
-            using (Stream response = request.GetResponse().GetResponseStream())
+            try
             {
-                memStream = new MemoryStream();
-                byte[] buffer = new byte[1024];
-                int byteCount;
-
-                do
+                using (Stream response = request.GetResponse().GetResponseStream())
                 {
-                    byteCount = response.Read(buffer, 0, buffer.Length);
-                    memStream.Write(buffer, 0, byteCount);
-                } while (byteCount > 0);
+                    memStream = new MemoryStream();
+                    byte[] buffer = new byte[1024];
+                    int byteCount;
+
+                    do
+                    {
+                        byteCount = response.Read(buffer, 0, buffer.Length);
+                        memStream.Write(buffer, 0, byteCount);
+                    } while (byteCount > 0);
+                }
+
+                bm = new Bitmap(Image.FromStream(memStream));
+
+                if (bm != null)
+                {
+                    Icon ic = Icon.FromHandle(bm.GetHicon());
+                    return ic.ToImageSource();
+                }
+
+
+                return null;
             }
-
-            bm = new Bitmap(Image.FromStream(memStream));
-
-            if (bm != null)
+            catch (Exception)
             {
-                Icon ic = Icon.FromHandle(bm.GetHicon());
-                return ic.ToImageSource();
+                return null;
             }
-
-
-            return null;
+            
         }
+
+
+        public static string GetURLLink(string checkurl)
+        {
+            if (checkurl.StartsWith("https://")) return "http://" + checkurl.Substring(8);
+            if (checkurl.StartsWith("http://")) return checkurl;
+            return "http://" + checkurl;
+        }
+
+        public static string[] GetResourceNames(string path)        {            var asm = Assembly.GetEntryAssembly();            string resourceName = $"{asm.GetName().Name}.g.resources";            using (var stream = asm.GetManifestResourceStream(resourceName))            {                using (var reader = new System.Resources.ResourceReader(stream))                {                    var d = reader                        .Cast<DictionaryEntry>()                        .Select(entry => (string)entry.Key)                        .Where(key => key.StartsWith(path, StringComparison.OrdinalIgnoreCase))                        .Select(key => $"pack://application:,,,/{asm.GetName().Name};component/{key}")                        .ToList();                    d.Sort();                    return d.ToArray();
+                }            }        }
 
     }
 }

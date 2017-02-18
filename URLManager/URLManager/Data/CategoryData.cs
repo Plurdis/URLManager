@@ -19,6 +19,7 @@ namespace URLManager.Data
             LocalFiles = new List<LocalFileExecutor>();
             ProgramFiles = new List<ProgramExecutor>();
             URLs = new List<URLExecutor>();
+            FolderFiles = new List<FolderExecutor>();
         }
 
 
@@ -55,6 +56,11 @@ namespace URLManager.Data
         [LocalData]
         public List<ProgramExecutor> ProgramFiles { get; set; }
 
+
+        [Executor]
+        [LocalData]
+        public List<FolderExecutor> FolderFiles { get; set; }
+
         [Executor]
         [LocalData]
         [CloudData]
@@ -76,6 +82,10 @@ namespace URLManager.Data
             if (URLs.Contains(item))
             {
                 URLs.Remove((URLExecutor)item);
+            }
+            if (FolderFiles.Contains(item))
+            {
+                FolderFiles.Remove((FolderExecutor)item);
             }
         }
 

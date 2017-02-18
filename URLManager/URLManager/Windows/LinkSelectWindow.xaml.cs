@@ -93,48 +93,57 @@ namespace URLManager.Windows
         {
             ItemPanel.Children.Clear();
 
-            if (cd.LocalFiles != null)
-                foreach (var itm in cd.LocalFiles)
-                {
-                    ContentItem ci = new ContentItem();
+            
+            foreach (var itm in cd.LocalFiles)
+            {
+                ContentItem ci = new ContentItem();
 
-                    ci.Click += ItemClick;
-                    ci.MouseRightButtonDown += ItemRightDown;
+                ci.Click += ItemClick;
+                ci.MouseRightButtonDown += ItemRightDown;
 
-                    ci.Content = itm.Name;
-                    ci.Tag = itm;
-                    ci.Source = itm.Icon;
-                    ItemPanel.Children.Add(ci);
-                }
+                ci.Content = itm.Name;
+                ci.Tag = itm;
+                ci.Source = itm.Icon;
+                ItemPanel.Children.Add(ci);
+            }
+            foreach (var itm in cd.ProgramFiles)
+            {
+                ContentItem ci = new ContentItem();
 
-            if (cd.ProgramFiles != null)
-                foreach (var itm in cd.ProgramFiles)
-                {
-                    ContentItem ci = new ContentItem();
+                ci.Click += ItemClick;
+                ci.MouseRightButtonDown += ItemRightDown;
 
-                    ci.Click += ItemClick;
-                    ci.MouseRightButtonDown += ItemRightDown;
+                ci.Content = itm.Name;
+                ci.Tag = itm;
+                ci.Source = itm.Icon;
+                ItemPanel.Children.Add(ci);
+            }
+            foreach (var itm in cd.URLs)
+            {
+                ContentItem ci = new ContentItem();
 
-                    ci.Content = itm.Name;
-                    ci.Tag = itm;
-                    ci.Source = itm.Icon;
-                    ItemPanel.Children.Add(ci);
-                }
+                ci.Click += ItemClick;
+                ci.MouseRightButtonDown += ItemRightDown;
 
-            if (cd.URLs != null)
-                foreach (var itm in cd.URLs)
-                {
-                    ContentItem ci = new ContentItem();
+                ci.Content = itm.Name;
+                ci.Tag = itm;
+                ci.Source = itm.Icon;
+                ItemPanel.Children.Add(ci);
+            }
+            foreach (var itm in cd.FolderFiles)
+            {
+                ContentItem ci = new ContentItem();
+                ci.Click += ItemClick;
+                ci.MouseRightButtonDown += ItemRightDown;
 
-                    ci.Click += ItemClick;
-                    ci.MouseRightButtonDown += ItemRightDown;
+                ci.Content = itm.Name;
+                ci.Tag = itm;
+                ci.Source = itm.Icon;
+                ItemPanel.Children.Add(ci);
+            }
+            
 
-                    ci.Content = itm.Name;
-                    ci.Tag = itm;
-                    ci.Source = itm.Icon;
-                    ItemPanel.Children.Add(ci);
-                }
-
+                
             if (ItemPanel.Children.Count == 0)
                 TBAddInfo.Visibility = Visibility.Visible;
             else

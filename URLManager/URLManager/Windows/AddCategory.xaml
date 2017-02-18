@@ -7,6 +7,64 @@
         mc:Ignorable="d"
         Title="AddCategory" Height="500" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="/URLManager;component/Resources/CategoryIcon/Widgets.png"/>
+                <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="카테고리 추가" FontSize="18" VerticalAlignment="Center"/>
+            </Grid>
+            
+            <TextBlock Text="카테고리를 추가하기 위해서 이름을 입력해야 합니다." Margin="0,20,0,0"/>
+
+            <Grid Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="카테고리 이름" TextAlignment="Center" Padding="0,3"/>
+                <TextBox x:Name="TBCategoryName" Grid.Column="1" TextChanged="TBCategoryName_TextChanged"/>
+            </Grid>
+        </StackPanel>
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="아이콘" TextAlignment="Center" Padding="0,3"/>
+            <TextBox Grid.Column="1"/>
+
+            <ListView x:Name="IconsListView" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,20,0,0"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          SelectedIndex="0" SelectionChanged="IconsListView_SelectionChanged">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+
+            </ListView>
+        </Grid>
+        <Grid Grid.Row="2" HorizontalAlignment="Right" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BtnCancel" Content="취소" Padding="40,0" Click="BtnCancel_Click"/>
+            <Button x:Name="BtnAdd" Content="추가" Grid.Column="2" Padding="40,0" Click="BtnAdd_Click" IsEnabled="False"/>
+        </Grid>
     </Grid>
 </Window>

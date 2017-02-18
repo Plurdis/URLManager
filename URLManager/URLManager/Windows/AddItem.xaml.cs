@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using URLManager.Data;
 using URLManager.FileHelper;
 using static URLManager.Core.Extension.EnumEx;
+using static URLManager.Global.Globals;
 
 namespace URLManager.Windows
 {
@@ -46,6 +47,16 @@ namespace URLManager.Windows
                 TBFileLocation.Text = ofd.FileName;
             }
             CheckEnable();
+        }
+
+        private void BtnSetFolder_Click(object sender, RoutedEventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                TBFolderLocation.Text = fbd.SelectedPath;
+            }
         }
 
         private void TBFileLocation_TextChanged(object sender, TextChangedEventArgs e)
@@ -81,6 +92,28 @@ namespace URLManager.Windows
             CheckEnable();
         }
 
+        private void TBFolderLocation_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            bool Flag = false;
+
+            Flag = string.IsNullOrEmpty(TBFolderLocation.Text) || !Directory.Exists(TBFolderLocation.Text);
+
+            TBFolderName.Text = null;
+
+            if (Flag)
+            {
+                TBFolderExists.Visibility = Visibility.Visible;
+                CBUseFolderName.IsEnabled = false;
+                TBFolderName.IsEnabled = false;
+            }
+            else
+            {
+                TBFolderExists.Visibility = Visibility.Hidden;
+                CBUseFolderName.IsEnabled = true;
+                TBFolderName.IsEnabled = true;
+            }
+            CheckEnable();
+        }
         private void CBUseOriginName_Checked(object sender, RoutedEventArgs e)
         {
             if ((bool)CBUseOriginName.IsChecked)
@@ -94,6 +127,19 @@ namespace URLManager.Windows
                 TBFileName.Text = null;
             }
         }
+        private void CBUseFolderName_Checked(object sender, RoutedEventArgs e)
+        {
+            if ((bool)CBUseFolderName.IsChecked)
+            {
+                TBFolderName.IsEnabled = false;
+                TBFolderName.Text = new FileInfo(TBFolderLocation.Text).Name;
+            }
+            else
+            {
+                TBFolderName.IsEnabled = true;
+                TBFolderName.Text = null;
+            }
+        }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
@@ -102,9 +148,46 @@ namespace URLManager.Windows
 
         private void BtnOK1_Click(object sender, RoutedEventArgs e)
         {
-            cd.LocalFiles.Add(new Core.Executor.LocalFileExecutor(TBFileLocation.Text, TBFileName.Text));
+            var fi = new FileInfo(TBFileLocation.Text);
+            if ((FileExtensions)Enum.Parse(typeof(FileExtensions), fi.Extension.Substring(1).ToUpper()) == FileExtensions.EXE)
+            {
+                cd.LocalFiles.Add(new Core.Executor.LocalFileExecutor(TBFileLocation.Text, TBFileName.Text));
+            }
+            else
+            {
+                cd.ProgramFiles.Add(new Core.Executor.ProgramExecutor(TBFileLocation.Text, TBFileName.Text));
+            }
             this.Close();
         }
+        private void BtnOK2_Click(object sender, RoutedEventArgs e)
+        {
+            cd.FolderFiles.Add(new Core.Executor.FolderExecutor(TBFolderLocation.Text, TBFolderName.Text));
+
+            this.Close();
+        }
+
+        private void BtnOK3_Click(object sender, RoutedEventArgs e)
+        {
+            string urllink = GetURLLink(TBURLLoc.Text);
+
+
+            Uri uriResult;
+            bool result = Uri.TryCreate(urllink, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
+            
+            
+            if (result)
+            {
+                cd.URLs.Add(new Core.Executor.URLExecutor(TBURLLoc.Text, TBURLName.Text));
+
+                this.Close();
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("해당 URL로 부터 정보를 받아오지 못했습니다.\n올바르지 않은 URL이거나 컴퓨터가 인터넷에 연결이 되어 있지 않을 수 있습니다.");
+            }
+            
+        }
+
 
         private void TBFileName_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -115,6 +198,38 @@ namespace URLManager.Windows
         {
             BtnOK1.IsEnabled = TBFileName.IsEnabled || File.Exists(TBFileLocation.Text);
             BtnOK1.IsEnabled = !string.IsNullOrEmpty(TBFileName.Text);
+
+            BtnOK2.IsEnabled = TBFolderName.IsEnabled || Directory.Exists(TBFolderLocation.Text);
+            BtnOK2.IsEnabled = !string.IsNullOrEmpty(TBFolderName.Text);
         }
+        
+
+        private void TBURLLoc_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if ((bool)CBUseURLName.IsChecked)
+            {
+                TBURLName.Text = TBURLLoc.Text;
+            }
+
+            if (string.IsNullOrEmpty(TBURLLoc.Text) || string.IsNullOrEmpty(TBURLName.Text))
+                BtnOK3.IsEnabled = false;
+            else
+                BtnOK3.IsEnabled = true;
+        }
+
+        private void CBUseURLName_Checked(object sender, RoutedEventArgs e)
+        {
+            TBURLName.IsEnabled = !(bool)CBUseURLName.IsChecked;
+        }
+
+        private void TBURLName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(TBURLLoc.Text) || string.IsNullOrEmpty(TBURLName.Text))
+                BtnOK3.IsEnabled = false;
+            else
+                BtnOK3.IsEnabled = true;
+        }
+
+        
     }
 }

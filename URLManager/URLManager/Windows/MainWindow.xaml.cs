@@ -11,7 +11,6 @@ using URLManager.Windows;
 using static URLManager.Global.Globals;
 using System.Windows.Media;
 using URLManager.Stoargy;
-using URLManager.Stoargy.Data;
 using URLManager.Core.Executor.Base;
 using URLManager.Core.Executor;
 using System.Collections.Generic;
@@ -23,6 +22,10 @@ using System.Net;
 using System.IO;
 using URLManager.Serialization;
 using URLManager.Data;
+using System.Reflection;
+using System.Linq;
+using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace URLManager
 {
@@ -35,31 +38,16 @@ namespace URLManager
         f.NotifyIcon notify;
 
 
+
         public MainWindow()
         {
             InitializeComponent();
 
-            //Serializer sr = new Serializer(new CategoryData()
-            //{
-            //    URLs = new List<URLExecutor>() { new URLExecutor("www.naver.com","NAVER") ,
-            //                                     new URLExecutor("www.daum.net","DAUM")
-            //                                     }
-            //});
 
+            ////////
+            //w.MessageBox.Show(string.Join("\r\n", GetResourceNames("resources/CategoryIcon")));
+            ////////
 
-
-            //Deserializer dsr = new Deserializer(sr.SaveToFile(@"C:\Users\uutak\Desktop\asdf.asd"));
-
-
-
-            //Deserializer dsr = new Deserializer(sr.Base64StringOutput());
-
-            //w.MessageBox.Show(((CategoryData)dsr.OutputData()).URLs.Count.ToString());
-
-            //w.MessageBox.Show(sr.Base64StringOutput());
-
-        
-            
             this.Topmost = true;
 
             GeneralHotKey hk = new GeneralHotKey(Key.LeftCtrl, new Key[] { Key.K });
@@ -75,19 +63,32 @@ namespace URLManager
 
             CategoryManager.Category.ListChanged += ItemChange;
 
-            var itm = new CategoryItem() { Content = "클라우드 Start", Source = GetResourcesIcon("FindIcon.png") };
 
-            itm.Click += CategoryClick;
+            ItemChange(null, null);
 
+
+            //CategoryManager.Category.Add(new CategoryData()
+            //{
+            //    URLs = new List<URLExecutor>() { new URLExecutor("www.ticketmonster.co.kr","티몬") ,
+            //                                     new URLExecutor("http://www.wemakeprice.com/","위메프"),
+            //                                     new URLExecutor("http://www.coupang.com/", "쿠팡"),
+            //                                     new URLExecutor("http://www.interpark.com/","인터파크"),
+            //                                     new URLExecutor("http://www.enuri.com/","에누리")},
+            //    //ProgramFiles = new List<ProgramExecutor>() { new ProgramExecutor(@"C:\Users\uutak\Desktop\asdf.asd","asdf.asd") },
+            //    //FolderFiles = new List<FolderExecutor>() { new FolderExecutor(@"C:\Users\uutak\Desktop\", "바탕화면")}
+            //    //,
+            //    CategoryName = "기본 포털 사이트",
+            //    Icon = GetResourcesIcon("CloudIcon.png"),
+            //    IsEnabled = true
+            //});
 
             CategoryManager.Category.Add(new CategoryData()
             {
-                URLs = new List<URLExecutor>() { new URLExecutor("www.naver.com","NAVER") ,
-                                                 new URLExecutor("www.daum.net","DAUM")},
-                ProgramFiles = new List<ProgramExecutor>() { new ProgramExecutor(@"C:\Users\uutak\Desktop\asdf.asd","asdf.asd") }
-                ,
-                CategoryName = "기본 포털 사이트",
-                Icon = GetResourcesIcon("CloudIcon.png"),
+                FolderFiles = new List<FolderExecutor>() { new FolderExecutor(@"F:\영화\[Leopard-Raws] Sword Art Online II (TVS 1280x720 x264 AAC)","소드 아트 온라인 2기") ,
+                                                    new FolderExecutor(@"F:\영화\노 게임 노 라이프","노 게임 노 라이프"),
+                                                    new FolderExecutor(@"F:\영화\재와 환상의 그림갈", "재와 환상의 그림갈")},
+                CategoryName = "애니메이션들",
+                Icon = GetResourcesIcon("slow_motion_video.png"),
                 IsEnabled = true
             });
 
@@ -101,10 +102,8 @@ namespace URLManager
             tmr.Start();
 
             LocalStoargy ls = new LocalStoargy();
-
-            //ls.Save(, false);
-
-            StoargyData sd;
+            
+            CategoryData[] sd;
 
             ls.Load(out sd);
 
@@ -117,23 +116,31 @@ namespace URLManager
 
             f.MenuItem itm1 = new f.MenuItem();
             f.MenuItem itm2 = new f.MenuItem();
+            f.MenuItem itm3 = new f.MenuItem();
             menu.MenuItems.Add(itm1);
             menu.MenuItems.Add(itm2);
+            menu.MenuItems.Add(itm3);
 
             itm1.Index = 0;
             itm1.Text = "프로그램 종료";
-            itm1.Click += delegate (object click, EventArgs e)
+            itm1.Click += delegate (object s, EventArgs e)
             {
                 this.Close();
             };
 
             itm2.Index = 0;
-            itm2.Text = "내부 설정";
-            itm2.Click += delegate (object click, EventArgs e)
+            itm2.Text = "설정";
+            itm2.Click += delegate (object s, EventArgs e)
             {
                 this.Close();
             };
 
+            itm3.Index = 0;
+            itm3.Text = "카테고리 추가";
+            itm3.Click += delegate (object s, EventArgs e)
+            {
+
+            };
 
             notify = new f.NotifyIcon();
             notify.ContextMenu = menu;
@@ -320,5 +327,21 @@ namespace URLManager
             return new w.Point(point.X, point.Y);
         }
 
+        private void BtnAdd_Click(object sender, w.RoutedEventArgs e)
+        {
+            AddCategory ac = new AddCategory();
+
+            ac.ShowDialog();
+        }
+
+        private void BtnEnd_Click(object sender, w.RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void BtnSetting_Click(object sender, w.RoutedEventArgs e)
+        {
+
+        }
     }
 }

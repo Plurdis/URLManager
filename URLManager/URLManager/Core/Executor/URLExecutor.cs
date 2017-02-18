@@ -20,9 +20,10 @@ namespace URLManager.Core.Executor
     {
         public URLExecutor(string urllink, string Name)
         {
-            if (!urllink.StartsWith("http://")) urllink = "http://" + urllink;
+            urllink = GetURLLink(urllink);
             _URLLink = urllink;
             this.Name = Name;
+            _Icon = GetImageFromURL(urllink);
         }
 
         string _URLLink;
@@ -43,11 +44,12 @@ namespace URLManager.Core.Executor
             }
         }
 
+        ImageSource _Icon;
         public override ImageSource Icon
         {
             get
             {
-                return GetImageFromURL(URLLink);
+                return _Icon;
             }
         }
 

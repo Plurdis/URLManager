@@ -10,8 +10,8 @@ using System.Windows;
 using URLManager.Core.Attribute;
 using URLManager.Core.Executor;
 using URLManager.Core.Executor.Base;
+using URLManager.Data;
 using URLManager.Stoargy.Base;
-using URLManager.Stoargy.Data;
 
 namespace URLManager.Stoargy
 {
@@ -38,11 +38,11 @@ namespace URLManager.Stoargy
 
         #endregion
 
-        public override bool Load(out StoargyData data)
+        public override bool Load(out CategoryData[] data)
         {
             StreamReader sr = new StreamReader(FileLocation);
 
-            data = new StoargyData();
+            data = new CategoryData[] { };
             
             string filedata = "";
 
@@ -156,7 +156,7 @@ namespace URLManager.Stoargy
             return true;
         }
 
-        public override bool Save(StoargyData data, bool CheckOverride)
+        public override bool Save(CategoryData[] data, bool CheckOverride)
         {
             if (CheckOverride) OnOverrideDetect();
 

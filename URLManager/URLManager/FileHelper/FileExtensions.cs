@@ -45,6 +45,12 @@ namespace URLManager.FileHelper
         C,
         [Description("MS-DOS 실행")]
         COM,
+        [Description("C# 소스")]
+        CS,
+        [Description("C++ 소스")]
+        CPP,
+        [Description("C# 프로젝트")]
+        CSPROJ,
 
         #endregion
 
@@ -188,6 +194,12 @@ namespace URLManager.FileHelper
         PPT,
         [Description("파워포인트 2007 문서")]
         PPTX,
+        [Description("파워포인트 매크로 문서")]
+        PPTM,
+        [Description("파워포인트 보기 전용 문서")]
+        PPSX,
+        [Description("매크로 파워포인트 보기 전용 문서")]
+        PPSM,
         [Description("PHP 소스")]
         PHP,
         [Description("PNG 그림")]
@@ -222,7 +234,11 @@ namespace URLManager.FileHelper
         #region U로 시작하는 파일 확장자 (비어있음)
         #endregion
 
-        #region V로 시작하는 파일 확장자 (비어있음)
+        #region V로 시작하는 파일 확장자
+        [Description("Visual Basic 소스")]
+        VB,
+        [Description("Visual Basic 프로젝트")]
+        VBPROJ,
         #endregion
 
         #region W로 시작하는 파일 확장자
@@ -236,7 +252,9 @@ namespace URLManager.FileHelper
 
         #endregion
 
-        #region X로 시작하는 파일 확장자 (비어있음)
+        #region X로 시작하는 파일 확장자
+        [Description("XML 기반 태그 언어")]
+        XAML,
         #endregion
 
         #region Y로 시작하는 파일 확장자 (비어있음)

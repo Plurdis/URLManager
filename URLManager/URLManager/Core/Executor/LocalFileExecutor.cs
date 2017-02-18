@@ -35,7 +35,7 @@ namespace URLManager.Core.Executor
         {
             get { return FileData.Exists; }
         }
-
+        
         public override ImageSource Icon
         {
             get

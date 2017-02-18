@@ -30,9 +30,9 @@
                 </Grid.RowDefinitions>
                 <Border Margin="5" Background="AliceBlue">
                     <WrapPanel>
-                        <c:ContentItem x:Name="btnItmAdd" Content="아이템 추가" Source="/URLManager;component/Resources/CategoryIcon/AddIcon.png" Click="btnItmAdd_Click"/>
-                        <c:ContentItem x:Name="btnItmRemove" Content="아이템 제거" Source="/URLManager;component/Resources/CategoryIcon/RemoveIcon.png" Click="btnItmRemove_Click"/>
-                        <c:ContentItem x:Name="itmCategorySet" Content="카테고리 설정" Width="90" Source="/URLManager;component/Resources/CategoryIcon/WidgetIcon.png"/>
+                        <c:ContentItem x:Name="btnItmAdd" Content="아이템 추가" Source="/URLManager;component/Resources/CategoryIcon/add.png" Click="btnItmAdd_Click"/>
+                        <c:ContentItem x:Name="btnItmRemove" Content="아이템 제거" Source="/URLManager;component/Resources/CategoryIcon/Remove.png" Click="btnItmRemove_Click"/>
+                        <c:ContentItem x:Name="itmCategorySet" Content="카테고리 설정" Width="90" Source="/URLManager;component/Resources/CategoryIcon/Widgets.png"/>
                     </WrapPanel>
 
                 </Border>
@@ -69,7 +69,7 @@
 
 
         </Grid>
-        <Image x:Name="image" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top" Width="30" Source="/URLManager;component/Resources/CategoryIcon/CloseBtn.png" MouseDown="CloseEvent"/>
+        <Image x:Name="image" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top" Width="30" Source="/URLManager;component/Resources/CloseBtn.png" MouseDown="CloseEvent"/>
             <!--<Rectangle Stroke="Black" StrokeThickness="1" Grid.RowSpan="2"/>-->
 
     </Grid>

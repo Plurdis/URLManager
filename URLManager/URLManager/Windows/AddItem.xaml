@@ -67,7 +67,16 @@
                     </Grid.RowDefinitions>
                     <ScrollViewer>
                         <StackPanel Margin="10">
-                            <TextBlock Text="특성 안내 | Attribute" VerticalAlignment="Center" FontSize="15"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Image Source="/URLManager;component/Resources/CategoryIcon/attach_file.png"/>
+                                <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="파일 링크 / 프로그램 추가" FontSize="18" VerticalAlignment="Center"/>
+                            </Grid>
+                            <TextBlock Text="특성 안내 | Attribute" Margin="0,10,0,0" VerticalAlignment="Center" FontSize="15"/>
                             
                             <WrapPanel Margin="0,10,0,0">
                                 <c:ImageLabel Style="{StaticResource LocalImageLabel}"/>
@@ -130,43 +139,139 @@
                 
             </TabItem>
             <TabItem Header="폴더 경로 추가">
-                <ScrollViewer>
-                    <StackPanel Margin="10">
-                        <Grid HorizontalAlignment="Left">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="폴더 경로 추가" VerticalAlignment="Center" FontSize="25"/>
-                            <TextBlock Text="Add Directory Location" Margin="10,0" Grid.Column="1" VerticalAlignment="Bottom" FontSize="18"/>
-                        </Grid>
-                        <WrapPanel Margin="0,10,0,0">
-                            <c:ImageLabel Style="{StaticResource LocalImageLabel}"/>
-                            <c:ImageLabel Style="{StaticResource EnvDependentImageLabel}"/>
-                        </WrapPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer>
+                        <StackPanel Margin="10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
 
-                    </StackPanel>
-                </ScrollViewer>
+                                <Image Source="/URLManager;component/Resources/CategoryIcon/Folder_open.png"/>
+                                <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="폴더 경로 추가" FontSize="18" VerticalAlignment="Center"/>
+                            </Grid>
+                            <TextBlock Text="특성 안내 | Attribute" Margin="0,10,0,0" VerticalAlignment="Center" FontSize="15"/>
+                            <WrapPanel Margin="0,10,0,0">
+                                <c:ImageLabel Style="{StaticResource LocalImageLabel}"/>
+                                <c:ImageLabel Style="{StaticResource EnvDependentImageLabel}"/>
+                            </WrapPanel>
+
+                            <TextBlock Text="값 입력 | Type Value" Margin="0,30,0,0" VerticalAlignment="Center" FontSize="15"/>
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="폴더 위치 선택" TextAlignment="Center"/>
+                                <TextBox x:Name="TBFolderLocation" Grid.Column="1" ToolTip="{Binding ElementName=TBFolderLocation, Path=Text}" TextChanged="TBFolderLocation_TextChanged"/>
+                                <Button x:Name="BtnSetFolder" Content="..." Grid.Column="2" Margin="10,0,0,0" Click="BtnSetFolder_Click"/>
+                            </Grid>
+
+                            <Grid Margin="0,10,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="폴더 이름" TextAlignment="Center"/>
+                                <TextBox x:Name="TBFolderName" Grid.Column="1" Height="20" IsEnabled="False" ToolTip="{Binding ElementName=TBFolderName, Path=Text}" TextChanged="TBFileName_TextChanged"/>
+                                <CheckBox x:Name="CBUseFolderName" Margin="10,0,0,0" VerticalAlignment="Center" 
+                                      Grid.Column="2" Content="원본 이름과 동일" 
+                                      Checked="CBUseFolderName_Checked" Unchecked="CBUseFolderName_Checked" IsEnabled="False"/>
+                            </Grid>
+                            
+                            <TextBlock x:Name="TBFolderExists" Text="존재하지 않는 폴더 경로입니다." Margin="0,10,0,0" FontSize="15" TextAlignment="Center"/>
+
+
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Grid Grid.Row="1" HorizontalAlignment="Right" Width="300" Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="BtnCancel2" Content="취소" Margin="0,5,10,5" Click="BtnCancel_Click" />
+                        <Button x:Name="BtnOK2" Content="확인" Margin="0,5,10,5" Grid.Column="1" Click="BtnOK2_Click" IsEnabled="False"/>
+                    </Grid>
+                </Grid>
+                
             </TabItem>
             <TabItem Header="URL 주소 추가">
-                <ScrollViewer>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer>
                     <StackPanel Margin="10">
-                        <Grid HorizontalAlignment="Left">
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="50"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="URL 주소 추가" VerticalAlignment="Center" FontSize="25"/>
-                            <TextBlock Text="Add URL Address" Margin="10,0" Grid.Column="1" VerticalAlignment="Bottom" FontSize="18"/>
+                            <Image Source="/URLManager;component/Resources/CategoryIcon/open_in_browser.png"/>
+                            <TextBlock Grid.Column="1" Margin="10,0,0,0" Text="URL 주소 추가" FontSize="18" VerticalAlignment="Center"/>
                         </Grid>
+                        <TextBlock Text="특성 안내 | Attribute" Margin="0,10,0,0" VerticalAlignment="Center" FontSize="15"/>
                         <WrapPanel Margin="0,10,0,0">
                             <c:ImageLabel Style="{StaticResource LocalImageLabel}"/>
                             <c:ImageLabel Style="{StaticResource CloudImageLabel}"/>
                             <c:ImageLabel Style="{StaticResource EnvFreeImageLabel}"/>
                         </WrapPanel>
 
+                        <TextBlock Text="값 입력 | Type Value" Margin="0,30,0,0" VerticalAlignment="Center" FontSize="15"/>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="URL 위치" TextAlignment="Center"/>
+                                <TextBox x:Name="TBURLLoc" Grid.Column="1" ToolTip="{Binding ElementName=TBURLLoc, Path=Text}" TextChanged="TBURLLoc_TextChanged"/>
+                        </Grid>
+
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="URL 이름" TextAlignment="Center"/>
+                            <TextBox x:Name="TBURLName" Grid.Column="1" Height="20" TextChanged="TBURLName_TextChanged" ToolTip="{Binding ElementName=TBURLName, Path=Text}"/>
+                            <CheckBox x:Name="CBUseURLName" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Column="2" Content="주소 그대로 사용"
+                                      Checked="CBUseURLName_Checked" Unchecked="CBUseURLName_Checked"/>
+                        </Grid>
                     </StackPanel>
                 </ScrollViewer>
+                    <Grid Grid.Row="1" HorizontalAlignment="Right" Width="300" Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="BtnCancel3" Content="취소" Margin="0,5,10,5" Click="BtnCancel_Click" />
+                        <Button x:Name="BtnOK3" Content="확인" Margin="0,5,10,5" Grid.Column="1" Click="BtnOK3_Click" IsEnabled="False"/>
+                    </Grid>
+
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>
