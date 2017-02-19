@@ -108,6 +108,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Debug\ItemToolTipDesign.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Debug\ListEditorDesign.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -187,6 +191,9 @@
     <Compile Include="Debug\ImageLabelDesign.xaml.cs">
       <DependentUpon>ImageLabelDesign.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Debug\ItemToolTipDesign.xaml.cs">
+      <DependentUpon>ItemToolTipDesign.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Debug\ListEditorDesign.xaml.cs">
       <DependentUpon>ListEditorDesign.xaml</DependentUpon>
     </Compile>
@@ -209,8 +216,8 @@
     <Compile Include="Serialization\Serializer.cs" />
     <Compile Include="Stoargy\Base\BaseStoargy.cs" />
     <Compile Include="Stoargy\LocalStoargy.cs" />
-    <Compile Include="Stoargy\StoargyItem.cs" />
-    <Compile Include="Stoargy\StoargyItemList.cs" />
+    <Compile Include="Stoargy\KeyItem.cs" />
+    <Compile Include="Stoargy\KeyPair.cs" />
     <Compile Include="Windows\AddCategory.xaml.cs">
       <DependentUpon>AddCategory.xaml</DependentUpon>
     </Compile>

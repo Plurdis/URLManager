@@ -15,8 +15,5 @@ namespace URLManager.Core.Interfaces
         TDisplay DisplayValue { get; set; }
 
         EditorType DataEditor { get; }
-
-        
-
     }
 }

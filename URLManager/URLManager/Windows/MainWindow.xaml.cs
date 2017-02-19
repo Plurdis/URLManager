@@ -102,10 +102,15 @@ namespace URLManager
             tmr.Start();
 
             LocalStoargy ls = new LocalStoargy();
-            
-            CategoryData[] sd;
 
-            ls.Load(out sd);
+            ls.Save(CategoryManager.Category.ToArray(), true);
+
+            CategoryData[] cd;
+            ls.Load(out cd);
+
+            //CategoryData[] sd;
+
+            //ls.Load(out sd);
 
             this.Opacity = 0.0;
             //MessageBox.Show(ls.GetValue("A", "A", "A", "A").Value);
@@ -173,7 +178,7 @@ namespace URLManager
 
         private void ItemChange(object sender, NotifyListEventArgs ev)
         {
-            if (CategoryManager.Category.Count <= 5)
+            if (CategoryManager.Category.Count <= 7)
             {
                 LeftBtn.Visibility = w.Visibility.Hidden;
                 RightBtn.Visibility = w.Visibility.Hidden;
@@ -184,9 +189,11 @@ namespace URLManager
                 RightBtn.Visibility = w.Visibility.Visible;
             }
             ItemsGrid.Children.Clear();
-            int index = 0;
+            int index = 0, counter = 0;
+
             foreach (var ct in CategoryManager.Category)
             {
+                counter++;
                 var itm = new CategoryItem();
                 itm.Content = ct.CategoryName;
                 itm.Source = ct.Icon;
@@ -197,6 +204,8 @@ namespace URLManager
                 ItemsGrid.Children.Add(itm);
 
                 index += 2;
+
+                if (counter == 7) break;
             }
         }
 

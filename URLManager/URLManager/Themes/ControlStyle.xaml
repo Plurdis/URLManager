@@ -40,7 +40,7 @@
                             <RowDefinition/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Image Grid.Row="0" Margin="15" Source="{TemplateBinding Source}"/>
+                        <Image Grid.Row="0" Margin="5" Source="{TemplateBinding Source}"/>
                         <Rectangle Fill="White" Grid.Row="1" Width="{Binding ElementName=TB, Path=Width}"/>
                         <TextBlock x:Name="TB" Text="{TemplateBinding Content}" Grid.Row="1" TextAlignment="Center" Margin="2" VerticalAlignment="Center" TextTrimming="CharacterEllipsis">
                             <TextBlock.ToolTip>

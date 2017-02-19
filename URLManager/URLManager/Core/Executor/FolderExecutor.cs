@@ -11,6 +11,7 @@ using static URLManager.Global.Globals;
 
 namespace URLManager.Core.Executor
 {
+    [Serializable]
     public class FolderExecutor : BaseExecutor
     {
         private string _FolderPath;

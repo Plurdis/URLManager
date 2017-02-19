@@ -11,6 +11,7 @@ using URLManager.Core.Attribute;
 using URLManager.Core.Executor;
 using URLManager.Core.Executor.Base;
 using URLManager.Data;
+using URLManager.Serialization;
 using URLManager.Stoargy.Base;
 
 namespace URLManager.Stoargy
@@ -22,7 +23,7 @@ namespace URLManager.Stoargy
 
             this.FileLocation = new FileInfo(FileLocation).FullName;
 
-            list = new StoargyItemList();
+            list = new KeyPair();
         }
 
         #region [   변수   ]
@@ -30,7 +31,7 @@ namespace URLManager.Stoargy
         /// <summary>저장될 파일의 정보입니다.</summary>
         public string FileLocation { get; set; }
 
-        public StoargyItemList list;
+        public KeyPair list;
 
         StreamWriter sw;
 
@@ -60,7 +61,7 @@ namespace URLManager.Stoargy
             var spDatas = new Tuple<string, string>[] { new Tuple<string, string>("[","]"), new Tuple<string, string>("<", ">"),
                                                         new Tuple<string, string>("{", "}"), new Tuple<string, string>("(", ")")};
 
-            string gt = UnknownStr, s = UnknownStr, g = UnknownStr;
+            string s = UnknownStr, g = UnknownStr;
 
 
             foreach (string d in filedata.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
@@ -75,32 +76,24 @@ namespace URLManager.Stoargy
                         switch (spData.Item1)
                         {
                             case "[":
-                                //MessageBox.Show("GroupType Detect! Content : " + str);
-
-                                gt = str;
-                                break;
-                            case "<":
                                 //MessageBox.Show("Section Detect! Content : " + str);
 
                                 s = str;
-                                if (gt == UnknownStr)
-                                    MessageBox.Show("파일을 읽던 중에 내부 구조적으로 오류가 발생했습니다.\n더이상 읽어올 수 없습니다. 파일이 손상된 것 같습니다." +
-                                                    "\n\n상세 정보 : GroupType이 정의되지 않은 상태에서 Section이 감지되었습니다. 파일의 오류이거나 코드 상의 문제일 가능성도 있습니다.");
                                 break;
                             case "{":
                                 //MessageBox.Show("Group Detect! Content : " + str);
 
                                 g = str;
-                                if (gt == UnknownStr || s == UnknownStr)
+                                if (s == UnknownStr)
                                     MessageBox.Show("파일을 읽던 중에 내부 구조적으로 오류가 발생했습니다.\n더이상 읽어올 수 없습니다. 파일이 손상된 것 같습니다." +
-                                                    "\n\n상세 정보 : GroupType이나 Section이 정의되지 않은 상태에서 Group이 감지되었습니다. 파일의 오류이거나 코드 상의 문제일 가능성도 있습니다.");
+                                                    "\n\n상세 정보 : Section이 정의되지 않은 상태에서 Group이 감지되었습니다. 파일의 오류이거나 코드 상의 문제일 가능성도 있습니다.");
                                 break;
                             case "(":
                                 //MessageBox.Show("Key + Value Detect! Content : " + str);
 
-                                if (gt == UnknownStr || s == UnknownStr || g == UnknownStr)
+                                if (s == UnknownStr || g == UnknownStr)
                                     MessageBox.Show("파일을 읽던 중에 내부 구조적으로 오류가 발생했습니다.\n더이상 읽어올 수 없습니다. 파일이 손상된 것 같습니다." +
-                                                    "\n\n상세 정보 : GroupType이나 Section, 혹은 Group이 정의되지 않은 상태에서 KeyValue이 감지되었습니다. 파일의 오류이거나 코드 상의 문제일 가능성도 있습니다.");
+                                                    "\n\n상세 정보 : Section이나 Group이 정의되지 않은 상태에서 KeyValue이 감지되었습니다. 파일의 오류이거나 코드 상의 문제일 가능성도 있습니다.");
 
 
                                 string ptn = "(.+?)=(.+)";
@@ -115,7 +108,7 @@ namespace URLManager.Stoargy
                                 Key = gc[1].Value;
                                 Value = gc[2].Value;
 
-                                list.SetValue(gt, s, g, Key, Value);
+                                list.SetValue(s, g, Key, Value);
 
                                 break;
                         }
@@ -126,30 +119,30 @@ namespace URLManager.Stoargy
 
 
 
-            foreach (var itm in list)
-            {
-                switch (itm.GroupType)
-                {
-                    case "Executor":
+            //foreach (var itm in list)
+            //{
+            //    switch (itm.GroupType)
+            //    {
+            //        case "Executor":
+            //            MessageBox.Show(itm.Key);
+            //            switch (itm.Section)
+            //            {
+            //                case "LocalFileExecutor":
 
-                        switch (itm.Section)
-                        {
-                            case "LocalFileExecutor":
+            //                    break;
+            //                case "ProgramExecutor":
+            //                    ProgramExecutor programexe;
 
-                                break;
-                            case "ProgramExecutor":
-                                ProgramExecutor programexe;
+            //                    break;
+            //                case "URLExecutor":
+            //                    URLExecutor urlexe;
 
-                                break;
-                            case "URLExecutor":
-                                URLExecutor urlexe;
+            //                    break;
+            //            }
 
-                                break;
-                        }
-
-                        break;
-                }
-            }
+            //            break;
+            //    }
+            //}
 
 
 
@@ -161,60 +154,22 @@ namespace URLManager.Stoargy
             if (CheckOverride) OnOverrideDetect();
 
             // Property 읽어오기
-            foreach (PropertyInfo PropInfo in data.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
+            //list.SetValue();
+
+            int counter = 0;
+            foreach(var category in CategoryManager.Category)
             {
-                bool flag = false;
-
-                foreach (var itm in PropInfo.CustomAttributes)
-                {
-                    Type t = itm.AttributeType;
-
-                    if (t == typeof(ExecutorAttribute)) flag = true;
-
-                    if (t == typeof(LocalDataAttribute) && flag)
-                    {
-
-                        var value = (List<BaseExecutor>)PropInfo.GetValue(data, null);
-
-                        if (value != null)
-                        {
-                            foreach (BaseExecutor executor in value)
-                            {
-                                if (executor.GetType() == typeof(LocalFileExecutor))
-                                {
-                                    LocalFileExecutor localExecutor = (LocalFileExecutor)executor;
-
-                                    list.SetValue("Executor", "LocalFileExecutor", localExecutor.Name, "CanExecute", localExecutor.CanExecute.ToString());
-                                    list.SetValue("Executor", "LocalFileExecutor", localExecutor.Name, "Path", localExecutor.Path);
-                                }
-                                else if (executor.GetType() == typeof(ProgramExecutor))
-                                {
-                                    ProgramExecutor progrmExecutor = (ProgramExecutor)executor;
-
-                                    list.SetValue("Executor", "ProgramExecutor", progrmExecutor.Name, "CanExecute", progrmExecutor.CanExecute.ToString());
-                                    list.SetValue("Executor", "ProgramExecutor", progrmExecutor.Name, "Path", progrmExecutor.Path);
-                                }
-                                else if (executor.GetType() == typeof(URLExecutor))
-                                {
-                                    URLExecutor urlExecutor = (URLExecutor)executor;
-
-                                    list.SetValue("Executor", "URLExecutor", urlExecutor.Name, "CanExecute", urlExecutor.CanExecute.ToString());
-                                    list.SetValue("Executor", "URLExecutor", urlExecutor.Name, "TargetURL", urlExecutor.URLLink);
-                                }
-
-                                // Executor 추가시 추가해야 할 부분
-                            }
-                        }
-
-                        break;
-                    }
-                }
+                Serializer sr = new Serializer(category);
+                string categoryB64 = sr.Base64StringOutput();
+                MessageBox.Show(categoryB64);
+                list.SetValue("URLManager", "Categories", $"Category{++counter}", categoryB64);
             }
+
 
             // 파일로부터 저장 시작 지점
 
 
-            IEnumerable<StoargyItem> it = list.OrderBy(i => i.GroupType).ThenBy(i => i.Section).ThenBy(i => i.Group).ThenBy(i => i.Key);
+            IEnumerable<KeyItem> it = list.OrderBy(i => i.Section).ThenBy(i => i.Group).ThenBy(i => i.Key);
 
             string gt = UnknownStr, s = UnknownStr, g = UnknownStr;
 
@@ -222,15 +177,10 @@ namespace URLManager.Stoargy
 
             foreach (var itm in it)
             {
-                if (gt != itm.GroupType)
-                {
-                    gt = itm.GroupType;
-                    sb.AppendLine($"[{itm.GroupType}]");
-                }
                 if (s != itm.Section)
                 {
                     s = itm.Section;
-                    sb.AppendLine($"<{itm.Section}>");
+                    sb.AppendLine($"[{itm.Section}]");
                 }
                 if (g != itm.Group)
                 {

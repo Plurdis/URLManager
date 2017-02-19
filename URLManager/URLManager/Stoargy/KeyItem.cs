@@ -7,17 +7,15 @@ using System.Threading.Tasks;
 namespace URLManager.Stoargy
 {
     
-    public struct StoargyItem
+    public struct KeyItem
     {
-        public StoargyItem(string groupType, string section, string group, string key, string value)
+        public KeyItem(string section, string group, string key, string value)
         {
-            GroupType = groupType;
             Section = section;
             Group = group;
             Key = key;
             Value = value;
         }
-        public string GroupType;
         public string Section;
         public string Group;
         public string Key;
@@ -28,7 +26,7 @@ namespace URLManager.Stoargy
         {
             try
             {
-                return this == (StoargyItem)obj;
+                return this == (KeyItem)obj;
             }
             catch (Exception)
             {
@@ -44,15 +42,14 @@ namespace URLManager.Stoargy
 
         public override string ToString()
         {
-            return $"{{{GroupType}}} > {{{Section}}} > {{{Group}}} > {{{Key}}} > {{{Value}}}";
+            return $"{{{Section}}} > {{{Group}}} > {{{Key}}} > {{{Value}}}";
         }
 
-        public static StoargyItem Empty = new StoargyItem("", "", "", "", "");
+        public static KeyItem Empty = new KeyItem("", "", "", "");
 
-        public static bool operator ==(StoargyItem Left, StoargyItem Right)
+        public static bool operator ==(KeyItem Left, KeyItem Right)
         {
-            if (Left.GroupType == Right.GroupType &&
-                Left.Section == Right.Section &&
+            if (Left.Section == Right.Section &&
                 Left.Group == Right.Group &&
                 Left.Key == Right.Key)
                 return true;
@@ -60,10 +57,9 @@ namespace URLManager.Stoargy
             return false;
         }
 
-        public static bool operator !=(StoargyItem Left, StoargyItem Right)
+        public static bool operator !=(KeyItem Left, KeyItem Right)
         {
-            if (Left.GroupType == Right.GroupType &&
-                Left.Section == Right.Section &&
+            if (Left.Section == Right.Section &&
                 Left.Group == Right.Group &&
                 Left.Key == Right.Key)
                 return false;

@@ -10,12 +10,11 @@ namespace URLManager.Core.Extension
 {
     static class StoargyItemEx
     {
-        public static bool ContainsBox(this StoargyItem[] list, StoargyItem item)
+        public static bool ContainsBox(this KeyItem[] list, KeyItem item)
         {
-            foreach (StoargyItem itm in list)
+            foreach (KeyItem itm in list)
             {
-                if (itm.GroupType == item.GroupType &&
-                    itm.Section == item.Section &&
+                if (itm.Section == item.Section &&
                     itm.Group == item.Group &&
                     itm.Key == item.Key)
                     return true;
@@ -23,26 +22,25 @@ namespace URLManager.Core.Extension
 
             return false;
         }
-        public static bool ContainsBox(this List<StoargyItem> list, StoargyItem item)
+        public static bool ContainsBox(this List<KeyItem> list, KeyItem item)
         {
             return ContainsBox(list.ToArray(), item);
         }
 
-        public static StoargyItem GetBox(this StoargyItem[] list, StoargyItem item)
+        public static KeyItem GetBox(this KeyItem[] list, KeyItem item)
         {
-            foreach (StoargyItem itm in list)
+            foreach (KeyItem itm in list)
             {
-                if (itm.GroupType == item.GroupType &&
-                    itm.Section == item.Section &&
+                if (itm.Section == item.Section &&
                     itm.Group == item.Group &&
                     itm.Key == item.Key)
                     return itm;
             }
             
-            return StoargyItem.Empty;
+            return KeyItem.Empty;
         }
 
-        public static StoargyItem GetBox(this List<StoargyItem> list, StoargyItem item)
+        public static KeyItem GetBox(this List<KeyItem> list, KeyItem item)
         {
             return GetBox(list.ToArray(), item);
         }

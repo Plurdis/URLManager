@@ -10,10 +10,10 @@ using static URLManager.Core.Extension.StoargyItemEx;
 
 namespace URLManager.Stoargy
 {
-    class StoargyItemList : IList<StoargyItem>, IEnumerable<StoargyItem>
+    class KeyPair : IList<KeyItem>, IEnumerable<KeyItem>
     {
-        private List<StoargyItem> list = new List<StoargyItem>();
-        public StoargyItem this[int index]
+        private List<KeyItem> list = new List<KeyItem>();
+        public KeyItem this[int index]
         {
             get { return list[index]; }
             set { list[index] = value; }
@@ -29,7 +29,7 @@ namespace URLManager.Stoargy
             get { return false; }
         }
 
-        public void Add(StoargyItem item)
+        public void Add(KeyItem item)
         {
             list.Add(item);
             Sort();
@@ -40,32 +40,32 @@ namespace URLManager.Stoargy
             list.Clear();
         }
 
-        public bool Contains(StoargyItem item)
+        public bool Contains(KeyItem item)
         {
             return list.Contains(item);
         }
 
-        public void CopyTo(StoargyItem[] array, int arrayIndex)
+        public void CopyTo(KeyItem[] array, int arrayIndex)
         {
             list.CopyTo(array, arrayIndex);
         }
 
-        public IEnumerator<StoargyItem> GetEnumerator()
+        public IEnumerator<KeyItem> GetEnumerator()
         {
             return list.GetEnumerator();
         }
 
-        public int IndexOf(StoargyItem item)
+        public int IndexOf(KeyItem item)
         {
             return list.IndexOf(item);
         }
 
-        public void Insert(int index, StoargyItem item)
+        public void Insert(int index, KeyItem item)
         {
             list.Insert(index, item);
         }
 
-        public bool Remove(StoargyItem item)
+        public bool Remove(KeyItem item)
         {
             return list.Remove(item);
         }
@@ -83,24 +83,27 @@ namespace URLManager.Stoargy
         /// <summary>
         /// 값을 설정합니다. 단, 그룹 타입, 섹션, 그룹, 키는 없더라도 자동 생성됩니다.
         /// </summary>
-        /// <param name="GroupType">[]로 묶여있는 아이템입니다. 최상위 아이템입니다.</param>
-        /// <param name="Section">&lt;&gt;로 묶여있는 아이템입니다.</param>
+        /// <param name="Section">[]로 묶여있는 아이템입니다.</param>
         /// <param name="Group">{}로 묶여있는 아이템입니다.</param>
         /// <param name="Key">(Key=Value) 형태의 Key 부분의 값입니다.</param>
         /// <param name="Value">(Key=Value) 형태의 Value 부분의 값입니다.</param>
-        public bool SetValue(string GroupType, string Section, string Group, string Key, string Value)
+        public bool SetValue(string Section, string Group, string Key, string Value)
         {
+            if (string.IsNullOrEmpty(Section) ||
+                string.IsNullOrEmpty(Group) ||
+                string.IsNullOrEmpty(Key) ||
+                string.IsNullOrEmpty(Value)) return false;
+
             try
             {
-                if (GroupType.Contains("[") || GroupType.Contains("]")) return false;
                 if (Section.Contains("<") || Section.Contains(">")) return false;
                 if (Group.Contains("{") || Group.Contains("}")) return false;
                 if (Key.Contains(":") || Key.Contains(":")) return false;
-                var itm = new StoargyItem(GroupType, Section, Group, Key, Value);
+                var itm = new KeyItem(Section, Group, Key, Value);
                 if (list.ContainsBox(itm)) this.Remove(list.GetBox(itm));
                 this.Add(itm);
             }
-            catch (Exception)
+            catch (Exception ex)
             { return false; }
 
             return true;
@@ -115,32 +118,30 @@ namespace URLManager.Stoargy
         /// <param name="Group">{}로 묶여있는 아이템입니다.</param>
         /// <param name="Key">(Key=Value) 형태의 Key 부분의 값입니다.</param>
         /// <returns></returns>
-        public StoargyItem GetValue(string GroupType, string Section, string Group, string Key)
+        public string GetValue(string Section, string Group, string Key)
         {
-            foreach (StoargyItem Item in this)
+            foreach (KeyItem Item in this)
             {
-                if (GroupType == Item.GroupType &&
-                    Section == Item.Section &&
+                if (Section == Item.Section &&
                     Group == Item.Group &&
                     Key == Item.Key)
-                    return Item;
+                    return Item.Key;
             }
 
-            return StoargyItem.Empty;
+            return "";
         }
 
 
         /// <summary>
         /// 값을 삭제합니다.
         /// </summary>
-        /// <param name="GroupType">[]로 묶여있는 아이템입니다. 최상위 아이템입니다.</param>
-        /// <param name="Section">&lt;&gt;로 묶여있는 아이템입니다.</param>
+        /// <param name="Section">[]로 묶여있는 아이템입니다.</param>
         /// <param name="Group">{}로 묶여있는 아이템입니다.</param>
         /// <param name="Key">(Key=Value) 형태의 Key 부분의 값입니다.</param>
         /// <returns></returns>
-        public bool RemoveValue(string GroupType, string Section, string Group, string Key)
+        public bool RemoveValue(string Section, string Group, string Key)
         {
-            var itm = new StoargyItem(GroupType, Section, Group, Key, "");
+            var itm = new KeyItem(Section, Group, Key, "");
             if (list.ContainsBox(itm)) return this.Remove(list.GetBox(itm));
 
             return false;
@@ -150,17 +151,16 @@ namespace URLManager.Stoargy
         /// <summary>
         /// 그룹을 삭제합니다.
         /// </summary>
-        /// <param name="GroupType">[]로 묶여있는 아이템입니다. 최상위 아이템입니다.</param>
-        /// <param name="Section">&lt;&gt;로 묶여있는 아이템입니다.</param>
+        /// <param name="Section">[]로 묶여있는 아이템입니다.</param>
         /// <param name="Group">{}로 묶여있는 아이템입니다.</param>
         /// <returns></returns>
-        public bool RemoveGroup(string GroupType, string Section, string Group)
+        public bool RemoveGroup(string Section, string Group)
         {
             bool Flag = false;
 
-            foreach (StoargyItem itm in list.Copy())
+            foreach (KeyItem itm in list.Copy())
             {
-                if (itm.GroupType == GroupType && itm.Section == Section && itm.Group == Group)
+                if (itm.Section == Section && itm.Group == Group)
                 {
                     this.Remove(itm);
                     Flag = true;
@@ -174,16 +174,15 @@ namespace URLManager.Stoargy
         /// <summary>
         /// 섹션을 삭제합니다.
         /// </summary>
-        /// <param name="GroupType">[]로 묶여있는 아이템입니다. 최상위 아이템입니다.</param>
-        /// <param name="Section">&lt;&gt;로 묶여있는 아이템입니다.</param>
+        /// <param name="Section">[]로 묶여있는 아이템입니다.</param>
         /// <returns></returns>
         public bool RemoveSection(string GroupType, string Section)
         {
             bool Flag = false;
 
-            foreach (StoargyItem itm in list.Copy())
+            foreach (KeyItem itm in list.Copy())
             {
-                if (itm.GroupType == GroupType && itm.Section == Section)
+                if (itm.Section == Section)
                 {
                     this.Remove(itm);
                     Flag = true;
@@ -199,9 +198,9 @@ namespace URLManager.Stoargy
 
         public void Sort()
         {
-            IEnumerable<StoargyItem> it = list.OrderBy(i => i.GroupType).ThenBy(i => i.Section).ThenBy(i => i.Group).ThenBy(i => i.Key);
+            IEnumerable<KeyItem> it = list.OrderBy(i => i.Section).ThenBy(i => i.Group).ThenBy(i => i.Key);
 
-            list = (List<StoargyItem>)it;
+            list = it.ToList();
         }
     }
 }
